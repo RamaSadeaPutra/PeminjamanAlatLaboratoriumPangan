@@ -1,0 +1,15 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class ToolImage extends Model
+{
+    protected $fillable = ['tool_id', 'image_path'];
+
+    public function tool()
+    {
+        return $this->belongsTo(Tool::class);
+    }
+}
