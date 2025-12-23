@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ToolController;
 use App\Http\Controllers\LoanController;
+<<<<<<< HEAD
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\User\ToolController as UserToolController;
 
@@ -46,6 +47,8 @@ Route::get('/admin/dashboard', [DashboardController::class, 'index'])
     ->name('admin.dashboard');
 
 
+=======
+>>>>>>> 217fe983735cfcfe26bde3416698aa585f5b1033
 
 Route::get('/loans/create', [LoanController::class, 'create'])->name('loans.create');
 Route::post('/loans', [LoanController::class, 'store'])->name('loans.store');
@@ -70,4 +73,8 @@ Route::get('/loans', [LoanController::class, 'index'])->name('loans.index');
 
 Route::get('/', function () {
     return view('welcome');
+<<<<<<< HEAD
 });
+=======
+});
+>>>>>>> 217fe983735cfcfe26bde3416698aa585f5b1033

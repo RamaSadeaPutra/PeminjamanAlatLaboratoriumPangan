@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 @extends('layouts.user')
+=======
+@extends('layouts.app')
+>>>>>>> 217fe983735cfcfe26bde3416698aa585f5b1033
 
 @section('title', 'Peminjaman Alat')
 

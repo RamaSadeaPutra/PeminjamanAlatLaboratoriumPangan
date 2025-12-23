@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>@yield('title')</title>
+<<<<<<< HEAD
 
     <style>
         :root {
@@ -129,15 +130,69 @@
 
         .btn-primary {
             background: var(--primary);
+=======
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            margin: 0;
+        }
+
+        header {
+            background: #2c3e50;
+            color: white;
+            padding: 15px 30px;
+        }
+
+        nav a {
+            color: white;
+            margin-right: 15px;
+            text-decoration: none;
+        }
+
+        .container {
+            padding: 30px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background: #ecf0f1;
+        }
+
+        .btn {
+            padding: 6px 12px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .btn-primary {
+            background: #3498db;
+>>>>>>> 217fe983735cfcfe26bde3416698aa585f5b1033
             color: white;
         }
 
         .btn-danger {
+<<<<<<< HEAD
             background: var(--danger);
+=======
+            background: #e74c3c;
+>>>>>>> 217fe983735cfcfe26bde3416698aa585f5b1033
             color: white;
         }
 
         .btn-warning {
+<<<<<<< HEAD
             background: var(--warning);
             color: white;
         }
@@ -151,11 +206,22 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 16px;
+=======
+            background: #f39c12;
+            color: white;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+>>>>>>> 217fe983735cfcfe26bde3416698aa585f5b1033
         }
     </style>
 </head>
 <body>
 
+<<<<<<< HEAD
 <!-- SIDEBAR -->
 <div class="sidebar">
     <h2>Admin Panel</h2>
@@ -198,6 +264,18 @@
         @yield('content')
     </div>
 
+=======
+<header>
+    <h2>Peminjaman Alat Laboratorium Pangan</h2>
+    <nav>
+        <a href="{{ route('tools.index') }}">Data Alat</a>
+        <a href="{{ route('loans.index') }}">Peminjaman</a>
+    </nav>
+</header>
+
+<div class="container">
+    @yield('content')
+>>>>>>> 217fe983735cfcfe26bde3416698aa585f5b1033
 </div>
 
 </body>
