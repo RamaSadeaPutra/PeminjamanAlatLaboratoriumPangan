@@ -18,3 +18,7 @@ class LoanDetail extends Model
         return $this->belongsTo(Tool::class);
     }
 }
+<<<<<<< HEAD
+    
+=======
+>>>>>>> 217fe983735cfcfe26bde3416698aa585f5b1033

@@ -3,6 +3,52 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ToolController;
 use App\Http\Controllers\LoanController;
+<<<<<<< HEAD
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\User\ToolController as UserToolController;
+
+use App\Http\Controllers\AuthController;
+
+
+Route::post('/logout', [AuthController::class, 'logout'])
+    ->name('logout');
+
+
+Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])
+        ->name('admin.dashboard');
+
+    Route::resource('tools', ToolController::class);
+});
+
+
+Route::middleware(['auth', 'user'])->prefix('user')->group(function () {
+    Route::get('/tools', [UserToolController::class, 'index'])
+        ->name('user.tools.index');
+
+    Route::post('/loans', [LoanController::class, 'store'])
+        ->name('loans.store');
+});
+
+
+
+Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+
+
+Route::get('/user/tools', [UserToolController::class, 'index'])
+    ->name('user.tools.index');
+
+
+
+Route::get('/admin/dashboard', [DashboardController::class, 'index'])
+    ->name('admin.dashboard');
+
+
+=======
+>>>>>>> 217fe983735cfcfe26bde3416698aa585f5b1033
 
 Route::get('/loans/create', [LoanController::class, 'create'])->name('loans.create');
 Route::post('/loans', [LoanController::class, 'store'])->name('loans.store');
@@ -27,4 +73,8 @@ Route::get('/loans', [LoanController::class, 'index'])->name('loans.index');
 
 Route::get('/', function () {
     return view('welcome');
+<<<<<<< HEAD
 });
+=======
+});
+>>>>>>> 217fe983735cfcfe26bde3416698aa585f5b1033
