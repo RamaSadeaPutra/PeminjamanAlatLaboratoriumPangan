@@ -462,3 +462,37 @@ tbody tr:hover {
     background: #fee2e2;
     color: #991b1b;
 }
+
+
+/* ===============================
+   User Main Area
+================================ */
+
+   .usermain {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+                background: var(--bg-gray);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-gray);
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            background: var(--light-blue);
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            color: var(--primary-blue);
+            font-weight: 700;
+        }
+
+       
