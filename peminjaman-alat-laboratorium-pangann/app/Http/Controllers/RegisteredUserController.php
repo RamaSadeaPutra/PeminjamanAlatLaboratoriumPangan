@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
@@ -48,7 +48,7 @@ class RegisteredUserController extends Controller
         // Auth::login($user);
 
         return redirect()->route('login')->with('status',
-    'Regitstasi Berhasil. Akun Menunggu persetujuan Admin'
+    'Regitstasi Berhasil.'
 );
     }
 }

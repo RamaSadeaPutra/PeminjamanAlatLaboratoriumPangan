@@ -66,12 +66,22 @@
             </button>
         </form>
 
+        <div class="mt-4 text-center">
+            <p class="text-sm text-gray-600">
+                Belum punya akun? 
+                <a href="{{ route('register') }}" class="text-blue-600 hover:text-blue-800 font-medium">
+                    Daftar disini
+                </a>
+            </p>
+        </div>
+
         <div class="login-footer">
             © 2025 Sistem Informasi Laboratorium
         </div>
     </div>
 
     <!-- SCRIPT -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         function togglePassword() {
             const input = document.getElementById("password");
@@ -89,6 +99,19 @@
         }
 
         lucide.createIcons();
+
+        // SweetAlert2 Popup
+   const statusMessage = "{{ session('status') ?? '' }}";
+
+    if (statusMessage) {
+        Swal.fire({
+            icon: 'success',
+            title: 'Berhasil!',
+            text: statusMessage,
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'OK'
+        });
+    }
     </script>
 </body>
 </html>

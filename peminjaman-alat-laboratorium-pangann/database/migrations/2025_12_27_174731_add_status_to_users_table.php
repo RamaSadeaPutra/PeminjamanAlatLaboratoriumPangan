@@ -9,24 +9,20 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
- public function up()
-{
-    if (!Schema::hasColumn('loans', 'status')) {
-        Schema::table('loans', function (Blueprint $table) {
-            $table->enum('status', ['menunggu', 'disetujui', 'ditolak'])
-                  ->default('menunggu');
+    public function up(): void
+    {
+        Schema::table('users', function (Blueprint $table) {
+            $table->string('status')->default('pending');
         });
     }
-}
-
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::table('loans', function (Blueprint $table) {
-            //
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('status');
         });
     }
 };
