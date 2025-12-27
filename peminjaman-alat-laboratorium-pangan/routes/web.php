@@ -34,3 +34,10 @@ Route::middleware(['auth', 'user'])->prefix('user')->group(function () {
     Route::get('/loans/create', [LoanController::class, 'create'])->name('loans.create');
     Route::post('/loans', [LoanController::class, 'store'])->name('loans.store');
 });
+
+// Rute untuk melihat daftar pengajuan
+Route::get('/admin', [LoanController::class, 'indexAdmin'])->name('admin.index');
+
+// Rute untuk aksi persetujuan
+Route::post('/admin/{id}/approve', [LoanController::class, 'approve'])->name('admin.approve');
+Route::post('/admin/{id}/reject', [LoanController::class, 'reject'])->name('admin.reject');
