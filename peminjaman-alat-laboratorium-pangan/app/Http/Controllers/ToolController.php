@@ -6,6 +6,7 @@ use App\Models\Tool;
 use App\Models\Lab;
 use App\Models\ToolCategory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ToolController extends Controller
 {
@@ -34,8 +35,16 @@ class ToolController extends Controller
             'tool_category_id' => 'required',
             'condition' => 'required',
             'stock' => 'required|integer|min:1',
+            'image' => 'nullable|image|max:2048',
         ]);
 
+   $imagePath = null;
+
+    if ($request->hasFile('image')) {
+        $imagePath = $request->file('image')->store('tools', 'public');
+    }
+
+ 
         Tool::create([
             'tool_name' => $request->tool_name,
             'lab_id' => $request->lab_id,
@@ -43,6 +52,8 @@ class ToolController extends Controller
             'condition' => $request->condition,
             'stock' => $request->stock,
             'description' => $request->description,
+            'image' => $imagePath,
+            
         ]);
 
         return redirect()->route('tools.index')
@@ -68,7 +79,24 @@ public function update(Request $request, Tool $tool)
         'tool_category_id' => 'required',
         'condition' => 'required',
         'stock' => 'required|integer|min:1',
+        'image' => 'nullable|image|max:2048',
     ]);
+
+           // Kalau upload gambar baru
+    if ($request->hasFile('image')) {
+
+        // Hapus gambar lama
+        if ($tool->image && Storage::disk('public')->exists($tool->image)) {
+            Storage::disk('public')->delete($tool->image);
+        }
+
+        // Simpan gambar baru
+        $tool->image = $request->file('image')->store('tools', 'public');
+    }
+
+
+    
+
 
     $tool->update([
         'tool_name' => $request->tool_name,

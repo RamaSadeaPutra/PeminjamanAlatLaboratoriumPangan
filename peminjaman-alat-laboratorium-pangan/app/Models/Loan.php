@@ -22,4 +22,9 @@ class Loan extends Model
     {
         return $this->hasMany(LoanDetail::class);
     }
+
+    public function tool()
+{
+    return $this->belongsTo(Tool::class);
+}
 }
