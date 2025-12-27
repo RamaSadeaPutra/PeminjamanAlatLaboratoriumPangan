@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\LoanApprovalController;
 use App\Http\Controllers\User\ToolController as UserToolController;
 use App\Http\Controllers\RegisteredUserController;
+use App\Http\Controllers\Admin\UserApprovalController;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,6 +60,16 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])
         ->name('admin.dashboard');
+
+    // persetujuan akun
+    Route::get('/users/pending', [UserApprovalController::class, 'index'])
+        ->name('admin.users.pending');
+    
+    Route::post('/users/{user}/approve', [UserApprovalController::class, 'approve'])
+        ->name('admin.users.approve');
+
+    Route::post('/users/{user}/reject', [UserApprovalController::class, 'reject'])
+        ->name('admin.users.reject');
 
     // kelola alat
     Route::resource('tools', ToolController::class);

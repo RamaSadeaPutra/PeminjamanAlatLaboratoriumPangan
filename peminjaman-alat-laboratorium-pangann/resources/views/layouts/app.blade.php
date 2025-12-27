@@ -27,6 +27,12 @@
                 <i data-lucide="layout-dashboard" class="w-4 h-4"></i> Dashboard
             </a>
 
+            <a href="{{ route('admin.users.pending') }}"
+               class="flex items-center gap-3 px-4 py-2 rounded-lg
+               {{ request()->routeIs('admin.users.*') ? 'bg-[var(--primary-blue)] text-white' : 'text-slate-600 hover:bg-slate-100' }}">
+                <i data-lucide="user-check" class="w-4 h-4"></i> Persetujuan Akun
+            </a>
+
             <a href="{{ route('tools.index') }}"
                class="flex items-center gap-3 px-4 py-2 rounded-lg
                {{ request()->routeIs('tools.*') ? 'bg-[var(--primary-blue)] text-white' : 'text-slate-600 hover:bg-slate-100' }}">
