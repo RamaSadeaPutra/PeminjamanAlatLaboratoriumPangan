@@ -23,7 +23,10 @@
         box-shadow: 0 10px 25px rgba(0,0,0,.06);
     ">
 
+
         <form action="{{ route('tools.store') }}" method="POST">
+
+        <form action="{{ route('tools.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
 
             <div style="
@@ -78,6 +81,7 @@
                     <label class="form-label">Deskripsi</label>
                     <textarea name="description" class="form-input" rows="4"></textarea>
                 </div>
+
 
             </div>
 
@@ -134,6 +138,79 @@
     </button>
 
 </div>
+
+                <div class="mb-4">
+    <label class="block text-sm font-medium text-gray-700">
+        Gambar Alat
+    </label>
+    <input 
+        type="file" 
+        name="image" 
+        class="mt-1 block w-full text-sm text-gray-500
+               file:mr-4 file:py-2 file:px-4
+               file:rounded-md file:border-0
+               file:text-sm file:font-semibold
+               file:bg-blue-50 file:text-blue-700
+               hover:file:bg-blue-100">
+</div>
+
+
+            </div>
+
+            {{-- ACTION --}}
+          <div style="
+    margin-top: 28px;
+    display:flex;
+    justify-content:flex-end;
+    gap:14px;
+    border-top:1px solid #e5e7eb;
+    padding-top:22px;
+">
+
+    {{-- BATAL --}}
+    <a href="{{ route('tools.index') }}"
+       style="
+            display:inline-flex;
+            align-items:center;
+            gap:8px;
+            padding:10px 20px;
+            border-radius:12px;
+            background:#f1f5f9;
+            color:#475569;
+            font-weight:600;
+            text-decoration:none;
+            transition:.2s;
+       "
+       onmouseover="this.style.background='#e2e8f0'"
+       onmouseout="this.style.background='#f1f5f9'">
+        <i data-lucide="arrow-left" style="width:16px;"></i>
+        Batal
+    </a>
+
+    {{-- SIMPAN --}}
+    <button type="submit"
+        style="
+            display:inline-flex;
+            align-items:center;
+            gap:8px;
+            padding:10px 22px;
+            border-radius:12px;
+            background:var(--primary-blue);
+            color:white;
+            font-weight:600;
+            border:none;
+            cursor:pointer;
+            box-shadow:0 6px 18px rgba(37,99,235,.35);
+            transition:.2s;
+        "
+        onmouseover="this.style.opacity='0.9'"
+        onmouseout="this.style.opacity='1'">
+        <i data-lucide="save" style="width:16px;"></i>
+        Simpan Data
+    </button>
+
+</div>
+
         </form>
     </div>
 </div>

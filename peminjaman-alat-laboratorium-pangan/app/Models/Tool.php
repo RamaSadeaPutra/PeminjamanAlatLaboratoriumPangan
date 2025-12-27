@@ -12,7 +12,8 @@ class Tool extends Model
         'tool_name',
         'condition',
         'stock',
-        'description'
+        'description',
+        'image',
     ];
 
     public function lab()
@@ -29,7 +30,10 @@ class Tool extends Model
     {
         return $this->hasMany(ToolImage::class);
     }
-
+public function loans()
+{
+    return $this->hasMany(Loan::class, 'tool_id');
+}
     public function loanDetails()
     {
         return $this->hasMany(LoanDetail::class);

@@ -135,10 +135,17 @@
                         </span>
                     </td>
                     <td>
+
                         <a href="{{ route('loans.create', ['tool_id' => $tool->id]) }}" class="btn-action">
                             Pinjam
                         </a>
                     </td>
+
+                       <a href="{{ route('user.loans.create', $tool->id) }}"
+   class="bg-blue-600 text-white px-4 py-2 rounded text-sm">
+    Pinjam
+</a>
+
                 </tr>
             @endforeach
         </tbody>

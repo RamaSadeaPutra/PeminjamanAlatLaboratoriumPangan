@@ -60,7 +60,11 @@
             <i data-lucide="plus-circle" size="18"></i>
             Tambah Alat Lab Baru
         </a>
+
         <a href="{{ route('loans.create') }}" class="quick-link">
+
+        <a href="{{ route('loans.my') }}" class="quick-link">
+
             <i data-lucide="file-plus" size="18"></i>
             Input Peminjaman Baru
         </a>
