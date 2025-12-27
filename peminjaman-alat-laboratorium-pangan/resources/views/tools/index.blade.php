@@ -31,7 +31,10 @@
                     <th class="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-widest">Kategori</th>
                     <th class="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-widest">Kondisi</th>
                     <th class="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-widest ">Stok</th>
+
+
                     <th class="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-widest">Gambar</th>
+
                  <th class="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-widest text-center">Aksi</th>
                 </tr>
             </thead>
@@ -64,6 +67,8 @@
                             {{ $tool->stock }}
                         </span>
                     </td>
+
+
                     
                     <td class="px-4 py-2">
     @if($tool->image)
@@ -73,6 +78,7 @@
         <span class="text-gray-400">Tidak ada</span>
     @endif
 </td>
+
 
                   <td class="px-6 py-4">
     <div class="flex items-center justify-center gap-2">

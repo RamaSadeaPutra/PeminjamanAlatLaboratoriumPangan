@@ -59,6 +59,19 @@
 
                 {{-- STATUS --}}
                 <td>
+
+                    @php
+                        $statusClass = match(strtolower($loan->status)) {
+                            'dipinjam' => 'warn',
+                            'dikembalikan' => 'good',
+                            default => 'bad',
+                        };
+                    @endphp
+
+                    <span class="badge {{ $statusClass }}">
+                        {{ strtoupper($loan->status) }}
+                    </span>
+
       @if($loan->status === 'menunggu')
     <span style="color:#f59e0b; font-weight:600;">
         Menunggu Persetujuan
@@ -72,6 +85,7 @@
         Ditolak
     </span>
 @endif
+
 
                 </td>
 
