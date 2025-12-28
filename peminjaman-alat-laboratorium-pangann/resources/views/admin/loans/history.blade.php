@@ -26,6 +26,25 @@
                     <i data-lucide="search" style="width: 16px; height: 16px;"></i>
                 </div>
             </div>
+
+            <!-- Tombol Export PDF (Khusus Admin) -->
+            <a href="{{ route('admin.loans.report') }}" style="
+                background: #ef4444; 
+                color: white; 
+                padding: 8px 16px; 
+                border-radius: 8px; 
+                text-decoration: none; 
+                font-size: 14px; 
+                font-weight: 600; 
+                display: flex; 
+                align-items: center; 
+                gap: 8px;
+                transition: 0.2s;"
+                onmouseover="this.style.background='#dc2626'"
+                onmouseout="this.style.background='#ef4444'">
+                <i data-lucide="file-text" style="width: 18px; height: 18px;"></i>
+                Export PDF
+            </a>
         </div>
     </div>
 

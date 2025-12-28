@@ -39,6 +39,23 @@
                 @enderror
             </div>
 
+            <!-- NIM -->
+            <div class="login-input-group">
+                <label class="login-label">NIM</label>
+                <div class="input-container">
+                    <i data-lucide="id-card" class="input-icon"></i>
+                    <input type="text"
+                           name="nim"
+                           class="login-input"
+                           placeholder="Masukkan NIM"
+                           value="{{ old('nim') }}"
+                           required>
+                </div>
+                @error('nim')
+                    <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
+                @enderror
+            </div>
+
             <!-- EMAIL -->
             <div class="login-input-group">
                 <label class="login-label">Alamat Email</label>

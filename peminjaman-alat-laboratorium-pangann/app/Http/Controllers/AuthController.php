@@ -17,10 +17,27 @@ public function login(Request $request)
     ]);
 
     if (Auth::attempt($credentials)) {
+        $user = Auth::user();
+
+        if ($user->status === 'pending') {
+            Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+            return back()->withErrors([
+                'email' => 'Akun Anda masih menunggu persetujuan admin.',
+            ]);
+        }
+
+        if ($user->status === 'rejected') {
+            Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+            return back()->withErrors([
+                'email' => 'Akun Anda ditolak. Silakan hubungi admin.',
+            ]);
+        }
 
         $request->session()->regenerate();
-
-        $user = Auth::user(); // ← AMAN
 
         if ($user->role === 'admin') {
             return redirect()->route('admin.dashboard');

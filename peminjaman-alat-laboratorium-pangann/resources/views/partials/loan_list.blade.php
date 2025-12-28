@@ -1,7 +1,10 @@
 @foreach($loans as $loan)
 <tr style="border-bottom:1px solid #e5e7eb;">
-    <td>{{ $loan->user->name }}</td>
-    <td>{{ $loan->tool->tool_name }}</td>
+    <td>
+        <div>{{ $loan->user->name ?? 'User Terhapus' }}</div>
+        <div style="font-size: 11px; color: #64748b;">{{ $loan->user->nim ?? '-' }}</div>
+    </td>
+    <td>{{ $loan->tool->tool_name ?? 'Alat Terhapus' }}</td>
     <td>{{ $loan->jumlah }}</td>
     <td>{{ $loan->tanggal_pinjam }}</td>
     <td>{{ $loan->tanggal_kembali }}</td>

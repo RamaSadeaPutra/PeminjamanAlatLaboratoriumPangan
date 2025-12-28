@@ -19,6 +19,20 @@
             PEMINJAMAN ALAT <br> LABORATORIUM TEKNOLOGI PANGAN
         </h2>
 
+        @if ($errors->any())
+            <div class="login-alert-error">
+                <i data-lucide="alert-circle" class="w-5 h-5 flex-shrink-0"></i>
+                <span class="text-left">{{ $errors->first() }}</span>
+            </div>
+        @endif
+
+        @if (session('status'))
+            <div class="login-alert-success">
+                <i data-lucide="check-circle" class="w-5 h-5 flex-shrink-0"></i>
+                <span class="text-left">{{ session('status') }}</span>
+            </div>
+        @endif
+
         <form method="POST" action="{{ route('login') }}">
             @csrf
 
@@ -100,18 +114,7 @@
 
         lucide.createIcons();
 
-        // SweetAlert2 Popup
-   const statusMessage = "{{ session('status') ?? '' }}";
-
-    if (statusMessage) {
-        Swal.fire({
-            icon: 'success',
-            title: 'Berhasil!',
-            text: statusMessage,
-            confirmButtonColor: '#3085d6',
-            confirmButtonText: 'OK'
-        });
-    }
+        lucide.createIcons();
     </script>
 </body>
 </html>

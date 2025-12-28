@@ -2,6 +2,7 @@
     <tr class="hover:bg-gray-50/50 transition-colors">
         <td class="px-6 py-4">
             <div class="font-medium text-gray-900">{{ $user->name }}</div>
+            <div class="text-xs text-gray-500">{{ $user->nim }}</div>
         </td>
         <td class="px-6 py-4 text-gray-600">
             {{ $user->email }}

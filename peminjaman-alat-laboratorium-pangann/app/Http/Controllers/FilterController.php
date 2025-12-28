@@ -67,7 +67,8 @@ class FilterController extends Controller
             ->when($query, function($q) use ($query) {
                 $q->where(function($sub) use ($query) {
                     $sub->where('name', 'LIKE', "%{$query}%")
-                        ->orWhere('email', 'LIKE', "%{$query}%");
+                        ->orWhere('email', 'LIKE', "%{$query}%")
+                        ->orWhere('nim', 'LIKE', "%{$query}%");
                 });
             })
             ->get();

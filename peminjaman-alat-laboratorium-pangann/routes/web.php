@@ -6,6 +6,7 @@ use App\Http\Controllers\ToolController;
 use App\Http\Controllers\LoanController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\LoanApprovalController;
+use App\Http\Controllers\Admin\UserApprovalController;
 use App\Http\Controllers\User\ToolController as UserToolController;
 use App\Http\Controllers\RegisteredUserController;
 use App\Http\Controllers\SearchController;
@@ -104,6 +105,10 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     // riwayat peminjaman
     Route::get('/loans/history', [LoanApprovalController::class, 'history'])
         ->name('admin.loans.history');
+
+    // route untuk export PDF riwayat peminjaman (khusus admin)
+    Route::get('/loans/report', [LoanApprovalController::class, 'exportPdf'])
+        ->name('admin.loans.report');
 
     Route::post('/loans/{loan}/approve', [LoanApprovalController::class, 'approve'])
         ->name('admin.loans.approve');

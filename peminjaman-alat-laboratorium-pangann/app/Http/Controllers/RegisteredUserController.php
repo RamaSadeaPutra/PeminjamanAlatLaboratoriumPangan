@@ -31,12 +31,14 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
+            'nim' => ['required', 'string', 'max:20', 'unique:'.User::class],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
         $user = User::create([
             'name' => $request->name,
+            'nim' => $request->nim,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'role'=>'user',
@@ -48,7 +50,7 @@ class RegisteredUserController extends Controller
         // Auth::login($user);
 
         return redirect()->route('login')->with('status',
-    'Regitstasi Berhasil.'
+    'Registrasi Berhasil. Silakan tunggu persetujuan admin untuk bisa login.'
 );
     }
 }

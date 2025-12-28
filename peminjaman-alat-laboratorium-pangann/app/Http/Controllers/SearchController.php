@@ -49,7 +49,8 @@ class SearchController extends Controller
         $users = User::where('status', 'pending')
             ->where(function($q) use ($query) {
                 $q->where('name', 'LIKE', "%{$query}%")
-                  ->orWhere('email', 'LIKE', "%{$query}%");
+                  ->orWhere('email', 'LIKE', "%{$query}%")
+                  ->orWhere('nim', 'LIKE', "%{$query}%");
             })
             ->get();
 
