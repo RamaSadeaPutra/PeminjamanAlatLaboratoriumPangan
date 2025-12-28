@@ -82,13 +82,15 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const ctx = document.getElementById('loanChart').getContext('2d');
+        const chartData = @json($chartData);
+
         new Chart(ctx, {
             type: 'line',
             data: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun'],
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'],
                 datasets: [{
                     label: 'Jumlah Pinjam',
-                    data: [10, 25, 15, 30, 20, 45], // Ganti dengan data asli dari database
+                    data: chartData,
                     borderColor: '#2563eb',
                     backgroundColor: 'rgba(37, 99, 235, 0.05)',
                     fill: true,
@@ -96,17 +98,18 @@
                     borderWidth: 3,
                     pointRadius: 4,
                     pointBackgroundColor: '#2563eb'
-
                 }]
-
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: { legend: { display: false } },
                 scales: {
-                    y: { beginAtZero: true, grid: { color: '#f1f5f9' } },
-
+                    y: { 
+                        beginAtZero: true, 
+                        grid: { color: '#f1f5f9' },
+                        ticks: { stepSize: 1 } 
+                    },
                     x: { grid: { display: false } }
                 }
             }
