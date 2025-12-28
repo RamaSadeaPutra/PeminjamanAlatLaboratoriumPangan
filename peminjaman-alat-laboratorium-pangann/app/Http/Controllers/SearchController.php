@@ -147,4 +147,31 @@ class SearchController extends Controller
 
         return abort(404);
     }
+
+    /**
+     * Fungsi untuk mencari riwayat pinjaman milik user sendiri
+     * Memungkinkan user mencari data lama mereka secara instan di menu "Riwayat Peminjaman"
+     */
+    public function searchMyHistory(Request $request)
+    {
+        $query = $request->input('query');
+        $userId = auth()->id();
+
+        // Mencari riwayat (kembali/ditolak) milik user login berdasarkan nama alat
+        $loans = Loan::with(['tool'])
+            ->where('user_id', $userId)
+            ->whereIn('status', ['kembali', 'ditolak'])
+            ->whereHas('tool', function($t) use ($query) {
+                $t->where('tool_name', 'LIKE', "%{$query}%");
+            })
+            ->latest()
+            ->get();
+
+        // Mengirimkan partial view khusus riwayat user
+        if ($request->ajax()) {
+            return view('partials.my_history_list', compact('loans'))->render();
+        }
+
+        return abort(404);
+    }
 }

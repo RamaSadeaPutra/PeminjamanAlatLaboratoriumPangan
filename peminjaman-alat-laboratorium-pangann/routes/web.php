@@ -21,6 +21,7 @@ Route::get('/search-users', [SearchController::class, 'searchUsers'])->name('sea
 Route::get('/search-loans', [SearchController::class, 'searchLoans'])->name('search.loans');
 Route::get('/search-history', [SearchController::class, 'searchHistory'])->name('search.history');
 Route::get('/search-myloans', [SearchController::class, 'searchMyLoans'])->name('search.myloans');
+Route::get('/search-myhistory', [SearchController::class, 'searchMyHistory'])->name('search.myhistory');
 
 /*
 |--------------------------------------------------------------------------

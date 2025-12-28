@@ -3,11 +3,22 @@
 @section('title', 'Riwayat Peminjaman')
 
 @section('content')
-<div class="content-header" style="margin-bottom:24px;">
-    <h1 style="font-size:22px; font-weight:700; margin:0;">Riwayat Peminjaman</h1>
-    <p style="margin:4px 0 0; color:#64748b; font-size:14px;">
-        Daftar peminjaman yang telah selesai atau ditolak
-    </p>
+<div class="content-header" style="margin-bottom:24px; display:flex; justify-content:space-between; align-items:center;">
+    <div>
+        <h1 style="font-size:22px; font-weight:700; margin:0;">Riwayat Peminjaman</h1>
+        <p style="margin:4px 0 0; color:#64748b; font-size:14px;">
+            Daftar peminjaman yang telah selesai atau ditolak
+        </p>
+    </div>
+
+    <!-- Input Live Search Riwayat Saya -->
+    <div style="position: relative;">
+        <input type="text" id="my-history-search" placeholder="Cari nama alat..." 
+               style="padding: 8px 12px; padding-left: 35px; border: 1px solid #e2e8f0; border-radius: 8px; outline: none; font-size: 14px; width: 220px;">
+        <div style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: #94a3b8;">
+            <i data-lucide="search" style="width: 16px; height: 16px;"></i>
+        </div>
+    </div>
 </div>
 
 @if(session('success'))
@@ -39,37 +50,46 @@
             </tr>
         </thead>
 
-        <tbody>
-            @forelse ($loans as $loan)
-            <tr>
-                <td>{{ $loop->iteration }}</td>
-                <td style="font-weight:600;">{{ $loan->tool->tool_name ?? '-' }}</td>
-                <td>{{ $loan->jumlah }}</td>
-                <td>{{ $loan->tanggal_pinjam }}</td>
-                <td>{{ $loan->tanggal_kembali ?? '-' }}</td>
-
-                {{-- STATUS --}}
-                <td>
-                    @if($loan->status === 'kembali')
-                        <span style="color:#64748b; font-weight:600;">Selesai</span>
-                    @elseif($loan->status === 'ditolak')
-                        <span style="color:#ef4444; font-weight:600;">Ditolak</span>
-                    @else
-                        {{ $loan->status }}
-                    @endif
-                </td>
-            </tr>
-            @empty
-            <tr>
-                <td colspan="6" style="text-align:center; padding:40px; color:#94a3b8;">
-                    <i data-lucide="inbox" size="40"></i>
-                    <p style="margin-top:10px;">Belum ada riwayat peminjaman</p>
-                </td>
-            </tr>
-            @endforelse
+        <tbody id="my-history-table-body">
+            @include('partials.my_history_list', ['loans' => $loans])
         </tbody>    
     </table>
 </div>
+
+<script>
+/**
+ * Logika Live Search untuk menu "Riwayat Peminjaman" (User)
+ * Memberikan pengalaman pencarian instan pada database riwayat milik user
+ */
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('my-history-search');
+    const tableBody = document.getElementById('my-history-table-body');
+
+    if (searchInput) {
+        searchInput.addEventListener('keyup', function() {
+            const query = this.value;
+
+            // Meminta fragmen HTML via AJAX ke server
+            fetch(`{{ route('search.myhistory') }}?query=${query}`, {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.text())
+            .then(html => {
+                // Perbarui isi tabel riwayat
+                tableBody.innerHTML = html;
+                
+                // Refresh icon Lucide agar tampil kembali
+                if (typeof lucide !== 'undefined') {
+                    lucide.createIcons();
+                }
+            })
+            .catch(error => console.error('Error fetching search results:', error));
+        });
+    }
+});
+</script>
 
 <script>
     lucide.createIcons();
