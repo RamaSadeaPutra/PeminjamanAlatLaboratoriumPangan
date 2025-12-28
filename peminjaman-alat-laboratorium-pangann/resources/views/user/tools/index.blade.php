@@ -105,13 +105,42 @@
 </style>
 
 <div class="table-card">
-    <div class="table-title" style="display: flex; justify-content: space-between; align-items: center;">
+    <div class="table-title" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
         <span>Alat Tersedia</span>
         
-        <!-- Form Pencarian -->
-        <div style="display: flex; gap: 8px;">
-            <input type="text" id="live-search" name="query" placeholder="Cari alat..." 
-                   style="padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 8px; outline: none; font-size: 14px; width: 250px;">
+        <!-- Filter & Pencarian -->
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <!-- Filter Lab -->
+            <select id="filter-lab" class="filter-select" style="padding: 8px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; outline: none; background: white;">
+                <option value="">Semua Lab</option>
+                @foreach($labs as $lab)
+                    <option value="{{ $lab->id }}">{{ $lab->lab_name }}</option>
+                @endforeach
+            </select>
+
+            <!-- Filter Kategori -->
+            <select id="filter-category" class="filter-select" style="padding: 8px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; outline: none; background: white;">
+                <option value="">Semua Kategori</option>
+                @foreach($categories as $category)
+                    <option value="{{ $category->id }}">{{ $category->category_name }}</option>
+                @endforeach
+            </select>
+
+            <!-- Filter Kondisi -->
+            <select id="filter-condition" class="filter-select" style="padding: 8px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; outline: none; background: white;">
+                <option value="">Semua Kondisi</option>
+                <option value="baik">Baik</option>
+                <option value="rusak">Rusak</option>
+            </select>
+
+            <!-- Pencarian -->
+            <div style="position: relative;">
+                <input type="text" id="live-search" placeholder="Cari alat..." 
+                       style="padding: 8px 12px; padding-left: 35px; border: 1px solid #e2e8f0; border-radius: 8px; outline: none; font-size: 14px; width: 200px;">
+                <div style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: #94a3b8;">
+                    <i data-lucide="search" style="width: 16px; height: 16px;"></i>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -134,30 +163,55 @@
 </div>
 
 <script>
+/**
+ * Logika Filter & Live Search Gabungan
+ * Mengambil data berdasarkan keyword, lab, kategori, dan kondisi secara bersamaan
+ */
 document.addEventListener('DOMContentLoaded', function() {
     const searchInput = document.getElementById('live-search');
+    const labSelect = document.getElementById('filter-lab');
+    const categorySelect = document.getElementById('filter-category');
+    const conditionSelect = document.getElementById('filter-condition');
     const tableBody = document.getElementById('tool-table-body');
 
-    if (searchInput) {
-        searchInput.addEventListener('keyup', function() {
-            const query = this.value;
+    function performFilter() {
+        const query = searchInput.value;
+        const labId = labSelect.value;
+        const categoryId = categorySelect.value;
+        const condition = conditionSelect.value;
 
-            fetch(`{{ route('search') }}?query=${query}`, {
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest'
-                }
-            })
-            .then(response => response.text())
-            .then(html => {
-                tableBody.innerHTML = html;
-                // Re-initialize lucide icons if applicable
-                if (typeof lucide !== 'undefined') {
-                    lucide.createIcons();
-                }
-            })
-            .catch(error => console.error('Error:', error));
+        // Membangun URL dengan parameter filter
+        const params = new URLSearchParams({
+            query: query,
+            lab_id: labId,
+            category_id: categoryId,
+            condition: condition
         });
+
+        fetch(`{{ route('filter.tools') }}?${params.toString()}`, {
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        })
+        .then(response => response.text())
+        .then(html => {
+            tableBody.innerHTML = html;
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        })
+        .catch(error => console.error('Error filtering tools:', error));
     }
+
+    // Event listener untuk input teks (search)
+    if (searchInput) {
+        searchInput.addEventListener('keyup', performFilter);
+    }
+
+    // Event listener untuk dropdown (filter)
+    [labSelect, categorySelect, conditionSelect].forEach(select => {
+        if (select) {
+            select.addEventListener('change', performFilter);
+        }
+    });
 });
 </script>
 </div>

@@ -11,7 +11,15 @@
         </p>
     </div>
 
-    <div style="display: flex; gap: 12px; align-items: center;">
+    <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+        <!-- Filter Status -->
+        <select id="filter-status-myloan" style="padding: 8px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; outline: none; background: white;">
+            <option value="">Semua Status</option>
+            <option value="menunggu">Menunggu</option>
+            <option value="disetujui">Disetujui</option>
+            <option value="dipinjam">Sedang Dipinjam</option>
+        </select>
+
         <!-- Input Live Search Pinjaman Saya -->
         <div style="position: relative;">
             <input type="text" id="my-loan-search" placeholder="Cari nama alat..." 
@@ -65,35 +73,42 @@
 
 <script>
 /**
- * Logika Live Search untuk menu "Pinjaman Saya"
- * Memungkinkan user mencari alat yang sedang mereka pinjam secara instan
+ * Logika Filter & Live Search Gabungan untuk "Pinjaman Saya"
  */
 document.addEventListener('DOMContentLoaded', function() {
     const searchInput = document.getElementById('my-loan-search');
+    const statusSelect = document.getElementById('filter-status-myloan');
     const tableBody = document.getElementById('my-loan-table-body');
 
-    if (searchInput) {
-        searchInput.addEventListener('keyup', function() {
-            const query = this.value;
+    function performMyLoanFilter() {
+        const query = searchInput.value;
+        const status = statusSelect.value;
 
-            // Fetch data via AJAX ke route search.myloans
-            fetch(`{{ route('search.myloans') }}?query=${query}`, {
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest'
-                }
-            })
-            .then(response => response.text())
-            .then(html => {
-                // Update isi tabel
-                tableBody.innerHTML = html;
-                
-                // Refresh icon Lucide
-                if (typeof lucide !== 'undefined') {
-                    lucide.createIcons();
-                }
-            })
-            .catch(error => console.error('Error:', error));
+        const params = new URLSearchParams({
+            query: query,
+            status: status
         });
+
+        // Menggunakan endpoint filter.myloans
+        fetch(`{{ route('filter.myloans') }}?${params.toString()}`, {
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        })
+        .then(response => response.text())
+        .then(html => {
+            tableBody.innerHTML = html;
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        })
+        .catch(error => console.error('Error filtering my loans:', error));
+    }
+
+    if (searchInput) {
+        searchInput.addEventListener('keyup', performMyLoanFilter);
+    }
+
+    if (statusSelect) {
+        statusSelect.addEventListener('change', performMyLoanFilter);
     }
 });
 </script>

@@ -63,8 +63,8 @@ document.addEventListener('DOMContentLoaded', function() {
         searchInput.addEventListener('keyup', function() {
             const query = this.value;
 
-            // Memanggil route search.users via AJAX
-            fetch(`{{ route('search.users') }}?query=${query}`, {
+            // Memanggil route filter.users via AJAX
+            fetch(`{{ route('filter.users') }}?query=${query}`, {
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest'
                 }

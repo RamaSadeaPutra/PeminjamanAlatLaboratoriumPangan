@@ -5,17 +5,26 @@
 @section('content')
 <div style="max-width: 1100px; margin:auto; padding:32px">
 
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 16px;">
         <h2 style="font-size:22px; font-weight:700; margin: 0;">
             Riwayat Peminjaman (Selesai/Ditolak)
         </h2>
 
-        <!-- Input Live Search History -->
-        <div style="position: relative;">
-            <input type="text" id="history-live-search" placeholder="Cari user atau alat..." 
-                   style="padding: 8px 12px; padding-left: 35px; border: 1px solid #e2e8f0; border-radius: 8px; outline: none; font-size: 14px; width: 250px;">
-            <div style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: #94a3b8;">
-                <i data-lucide="search" style="width: 16px; height: 16px;"></i>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <!-- Filter Status Riwayat -->
+            <select id="filter-status-history" style="padding: 8px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; outline: none; background: white;">
+                <option value="">Semua Status</option>
+                <option value="kembali">Dikembalikan</option>
+                <option value="ditolak">Ditolak</option>
+            </select>
+
+            <!-- Input Live Search History -->
+            <div style="position: relative;">
+                <input type="text" id="history-live-search" placeholder="Cari user atau alat..." 
+                       style="padding: 8px 12px; padding-left: 35px; border: 1px solid #e2e8f0; border-radius: 8px; outline: none; font-size: 14px; width: 220px;">
+                <div style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: #94a3b8;">
+                    <i data-lucide="search" style="width: 16px; height: 16px;"></i>
+                </div>
             </div>
         </div>
     </div>
@@ -46,35 +55,41 @@
 
 <script>
 /**
- * Logika Live Search untuk pencarian riwayat peminjaman
- * Memungkinkan admin memfilter data riwayat secara instan
+ * Logika Filter & Live Search Riwayat Peminjaman (Admin)
  */
 document.addEventListener('DOMContentLoaded', function() {
     const searchInput = document.getElementById('history-live-search');
+    const statusSelect = document.getElementById('filter-status-history');
     const tableBody = document.getElementById('history-table-body');
 
-    if (searchInput) {
-        searchInput.addEventListener('keyup', function() {
-            const query = this.value;
+    function performHistoryFilter() {
+        const query = searchInput.value;
+        const status = statusSelect.value;
 
-            // Memanggil endpoint search.history via AJAX
-            fetch(`{{ route('search.history') }}?query=${query}`, {
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest'
-                }
-            })
-            .then(response => response.text())
-            .then(html => {
-                // Perbarui baris tabel dengan hasil baru
-                tableBody.innerHTML = html;
-                
-                // Render ulang icon Lucide jika ada perubahan konten
-                if (typeof lucide !== 'undefined') {
-                    lucide.createIcons();
-                }
-            })
-            .catch(error => console.error('Error fetching search results:', error));
+        const params = new URLSearchParams({
+            query: query,
+            status: status
         });
+
+        fetch(`{{ route('filter.history') }}?${params.toString()}`, {
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        })
+        .then(response => response.text())
+        .then(html => {
+            tableBody.innerHTML = html;
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
+    if (searchInput) {
+        searchInput.addEventListener('keyup', performHistoryFilter);
+    }
+
+    if (statusSelect) {
+        statusSelect.addEventListener('change', performHistoryFilter);
     }
 });
 </script>

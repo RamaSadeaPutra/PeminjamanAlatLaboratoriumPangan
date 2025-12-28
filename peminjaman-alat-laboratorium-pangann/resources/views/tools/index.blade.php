@@ -9,7 +9,30 @@
             <h1 class="text-2xl font-bold text-slate-800">Daftar Alat Laboratorium</h1>
             <p class="text-sm text-slate-500">Manajemen stok dan kondisi inventaris alat</p>
         </div>
-        <div class="flex items-center gap-4">
+        <div class="flex items-center gap-3 flex-wrap">
+            <!-- Filter Lab -->
+            <select id="filter-lab-admin" class="px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="">Semua Lab</option>
+                @foreach($labs as $lab)
+                    <option value="{{ $lab->id }}">{{ $lab->lab_name }}</option>
+                @endforeach
+            </select>
+
+            <!-- Filter Kategori -->
+            <select id="filter-category-admin" class="px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="">Semua Kategori</option>
+                @foreach($categories as $category)
+                    <option value="{{ $category->id }}">{{ $category->category_name }}</option>
+                @endforeach
+            </select>
+
+            <!-- Filter Kondisi -->
+            <select id="filter-condition-admin" class="px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="">Semua Kondisi</option>
+                <option value="baik">Baik</option>
+                <option value="rusak">Rusak</option>
+            </select>
+
             <!-- Form Pencarian Admin -->
             <div class="flex items-center">
                 <input type="text" id="admin-live-search" name="query" placeholder="Cari alat..." 
@@ -50,29 +73,53 @@
 </div>
 
 <script>
+/**
+ * Logika Filter & Search Admin
+ * Menangani update tabel alat lab untuk admin secara real-time
+ */
 document.addEventListener('DOMContentLoaded', function() {
     const searchInput = document.getElementById('admin-live-search');
+    const labSelect = document.getElementById('filter-lab-admin');
+    const categorySelect = document.getElementById('filter-category-admin');
+    const conditionSelect = document.getElementById('filter-condition-admin');
     const tableBody = document.getElementById('admin-tool-table-body');
 
-    if (searchInput) {
-        searchInput.addEventListener('keyup', function() {
-            const query = this.value;
+    function performAdminFilter() {
+        const query = searchInput.value;
+        const labId = labSelect.value;
+        const categoryId = categorySelect.value;
+        const condition = conditionSelect.value;
 
-            fetch(`{{ route('search') }}?query=${query}`, {
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest'
-                }
-            })
-            .then(response => response.text())
-            .then(html => {
-                tableBody.innerHTML = html;
-                if (typeof lucide !== 'undefined') {
-                    lucide.createIcons();
-                }
-            })
-            .catch(error => console.error('Error:', error));
+        const params = new URLSearchParams({
+            query: query,
+            lab_id: labId,
+            category_id: categoryId,
+            condition: condition
         });
+
+        // Memanggil route filter.tools yang baru di FilterController
+        fetch(`{{ route('filter.tools') }}?${params.toString()}`, {
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        })
+        .then(response => response.text())
+        .then(html => {
+            tableBody.innerHTML = html;
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        })
+        .catch(error => console.error('Error filtering admin tools:', error));
     }
+
+    if (searchInput) {
+        searchInput.addEventListener('keyup', performAdminFilter);
+    }
+
+    [labSelect, categorySelect, conditionSelect].forEach(select => {
+        if (select) {
+            select.addEventListener('change', performAdminFilter);
+        }
+    });
 });
 </script>
 </div>

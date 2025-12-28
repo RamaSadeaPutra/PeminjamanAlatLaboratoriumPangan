@@ -14,7 +14,10 @@ class ToolController extends Controller
     public function index()
     {
         $tools = Tool::with(['lab', 'category'])->get();
-        return view('tools.index', compact('tools'));
+        $labs = Lab::all();
+        $categories = ToolCategory::all();
+        
+        return view('tools.index', compact('tools', 'labs', 'categories'));
     }
 
     // Tampilkan form tambah alat

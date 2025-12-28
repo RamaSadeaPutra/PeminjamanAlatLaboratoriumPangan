@@ -8,12 +8,12 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\LoanApprovalController;
 use App\Http\Controllers\User\ToolController as UserToolController;
 use App\Http\Controllers\RegisteredUserController;
-use App\Http\Controllers\Admin\UserApprovalController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\FilterController;
 
 /*
 |--------------------------------------------------------------------------
-| SEARCH
+| SEARCH & FILTER
 |--------------------------------------------------------------------------
 */
 Route::get('/search', [SearchController::class, 'search'])->name('search');
@@ -22,6 +22,16 @@ Route::get('/search-loans', [SearchController::class, 'searchLoans'])->name('sea
 Route::get('/search-history', [SearchController::class, 'searchHistory'])->name('search.history');
 Route::get('/search-myloans', [SearchController::class, 'searchMyLoans'])->name('search.myloans');
 Route::get('/search-myhistory', [SearchController::class, 'searchMyHistory'])->name('search.myhistory');
+
+// New Detailed Filters
+Route::prefix('filter')->name('filter.')->group(function() {
+    Route::get('/tools', [FilterController::class, 'filterTools'])->name('tools');
+    Route::get('/users', [FilterController::class, 'filterUsers'])->name('users');
+    Route::get('/loans', [FilterController::class, 'filterLoans'])->name('loans');
+    Route::get('/history', [FilterController::class, 'filterHistory'])->name('history');
+    Route::get('/myloans', [FilterController::class, 'filterMyLoans'])->name('myloans');
+    Route::get('/myhistory', [FilterController::class, 'filterMyHistory'])->name('myhistory');
+});
 
 /*
 |--------------------------------------------------------------------------
