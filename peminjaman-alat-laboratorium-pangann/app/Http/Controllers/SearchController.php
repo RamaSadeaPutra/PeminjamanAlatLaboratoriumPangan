@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Tool;
 use App\Models\User;
+use App\Models\Loan;
 use Illuminate\Http\Request;
 
 class SearchController extends Controller
@@ -55,6 +56,36 @@ class SearchController extends Controller
         // Mengembalikan partial view untuk diupdate via JavaScript
         if ($request->ajax()) {
             return view('partials.user_list', compact('users'))->render();
+        }
+
+        return abort(404);
+    }
+
+    /**
+     * Fungsi untuk mencari pengajuan peminjaman (Loan Request)
+     * Mencari berdasarkan nama user atau nama alat
+     */
+    public function searchLoans(Request $request)
+    {
+        $query = $request->input('query');
+
+        // Mencari loans yang belum selesai (menunggu, disetujui, dipinjam)
+        $loans = Loan::with(['user', 'tool'])
+            ->whereIn('status', ['menunggu', 'disetujui', 'dipinjam'])
+            ->where(function($q) use ($query) {
+                $q->whereHas('user', function($u) use ($query) {
+                    $u->where('name', 'LIKE', "%{$query}%");
+                })
+                ->orWhereHas('tool', function($t) use ($query) {
+                    $t->where('tool_name', 'LIKE', "%{$query}%");
+                });
+            })
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        // Mengembalikan partial view untuk AJAX
+        if ($request->ajax()) {
+            return view('partials.loan_list', compact('loans'))->render();
         }
 
         return abort(404);
