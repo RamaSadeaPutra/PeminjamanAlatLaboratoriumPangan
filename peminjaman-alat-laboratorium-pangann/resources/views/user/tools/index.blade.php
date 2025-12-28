@@ -105,7 +105,15 @@
 </style>
 
 <div class="table-card">
-    <h2 class="table-title">Alat Tersedia</h2>
+    <div class="table-title" style="display: flex; justify-content: space-between; align-items: center;">
+        <span>Alat Tersedia</span>
+        
+        <!-- Form Pencarian -->
+        <div style="display: flex; gap: 8px;">
+            <input type="text" id="live-search" name="query" placeholder="Cari alat..." 
+                   style="padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 8px; outline: none; font-size: 14px; width: 250px;">
+        </div>
+    </div>
 
     <table class="modern-table">
         <thead>
@@ -119,29 +127,38 @@
                 <th>Aksi</th>
             </tr>
         </thead>
-        <tbody>
-            @foreach ($tools as $tool)
-                <tr>
-                    <td>{{ $loop->iteration }}</td>
-                    <td class="font-bold">{{ $tool->tool_name }}</td>
-                    <td>{{ $tool->lab->name ?? '-' }}</td>
-                    <td>{{ $tool->category->name ?? '-' }}</td>
-                    <td>
-                        <span class="badge-stock">{{ $tool->stock }}</span>
-                    </td>
-                    <td>
-                        <span class="badge {{ $tool->condition === 'baik' ? 'good' : 'bad' }}">
-                           {{ $tool->condition }}
-                        </span>
-                    </td>
-                    <td>
-                       <a href="{{ route('user.loans.create', $tool->id) }}"
-   class="bg-blue-600 text-white px-4 py-2 rounded text-sm">
-    Pinjam
-</a>
-                </tr>
-            @endforeach
+        <tbody id="tool-table-body">
+            @include('partials.tool_list', ['tools' => $tools])
         </tbody>
     </table>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('live-search');
+    const tableBody = document.getElementById('tool-table-body');
+
+    if (searchInput) {
+        searchInput.addEventListener('keyup', function() {
+            const query = this.value;
+
+            fetch(`{{ route('search') }}?query=${query}`, {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.text())
+            .then(html => {
+                tableBody.innerHTML = html;
+                // Re-initialize lucide icons if applicable
+                if (typeof lucide !== 'undefined') {
+                    lucide.createIcons();
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    }
+});
+</script>
 </div>
 @endsection

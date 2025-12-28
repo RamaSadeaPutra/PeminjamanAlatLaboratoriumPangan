@@ -9,6 +9,14 @@ use App\Http\Controllers\Admin\LoanApprovalController;
 use App\Http\Controllers\User\ToolController as UserToolController;
 use App\Http\Controllers\RegisteredUserController;
 use App\Http\Controllers\Admin\UserApprovalController;
+use App\Http\Controllers\SearchController;
+
+/*
+|--------------------------------------------------------------------------
+| SEARCH
+|--------------------------------------------------------------------------
+*/
+Route::get('/search', [SearchController::class, 'search'])->name('search');
 
 /*
 |--------------------------------------------------------------------------
