@@ -10,6 +10,15 @@
             <h1 class="text-2xl font-bold text-gray-900">Persetujuan Akun</h1>
             <p class="text-gray-500 mt-1">Daftar pengguna baru yang menunggu persetujuan</p>
         </div>
+
+        <!-- Input Live Search User -->
+        <div class="relative">
+            <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <i data-lucide="search" class="h-4 w-4 text-gray-400"></i>
+            </span>
+            <input type="text" id="user-live-search" placeholder="Cari nama atau email..." 
+                   class="pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm w-64">
+        </div>
     </div>
 
     <!-- Alert Success -->
@@ -33,61 +42,46 @@
                         <th class="px-6 py-4 text-sm font-semibold text-gray-600 text-right">Aksi</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-gray-100">
-                    @forelse($users as $user)
-                        <tr class="hover:bg-gray-50/50 transition-colors">
-                            <td class="px-6 py-4">
-                                <div class="font-medium text-gray-900">{{ $user->name }}</div>
-                            </td>
-                            <td class="px-6 py-4 text-gray-600">
-                                {{ $user->email }}
-                            </td>
-                            <td class="px-6 py-4 text-gray-600">
-                                {{ $user->created_at->format('d M Y H:i') }}
-                            </td>
-                            <td class="px-6 py-4">
-                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                                    {{ ucfirst($user->status) }}
-                                </span>
-                            </td>
-                            <td class="px-6 py-4 text-right">
-                                <div class="flex items-center justify-end gap-2">
-                                    <form action="{{ route('admin.users.approve', $user) }}" method="POST" class="inline">
-                                        @csrf
-                                        <button type="submit" 
-                                                class="text-green-600 hover:text-green-700 hover:bg-green-50 p-2 rounded-lg transition-colors border border-transparent hover:border-green-200"
-                                                title="Setujui">
-                                            <i data-lucide="check" class="w-5 h-5"></i>
-                                        </button>
-                                    </form>
-                                    
-                                    <form action="{{ route('admin.users.reject', $user) }}" method="POST" class="inline" onsubmit="return confirm('Apakah Anda yakin ingin menolak akun ini?');">
-                                        @csrf
-                                        <button type="submit" 
-                                                class="text-red-600 hover:text-red-700 hover:bg-red-50 p-2 rounded-lg transition-colors border border-transparent hover:border-red-200"
-                                                title="Tolak">
-                                            <i data-lucide="x" class="w-5 h-5"></i>
-                                        </button>
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="5" class="px-6 py-12 text-center text-gray-500">
-                                <div class="flex flex-col items-center justify-center">
-                                    <div class="bg-gray-100 p-3 rounded-full mb-3">
-                                        <i data-lucide="inbox" class="w-6 h-6 text-gray-400"></i>
-                                    </div>
-                                    <p class="font-medium">Tidak ada pengajuan akun baru</p>
-                                    <p class="text-sm mt-1">Semua pendaftaran telah diproses</p>
-                                </div>
-                            </td>
-                        </tr>
-                    @endforelse
+                <tbody id="user-table-body" class="divide-y divide-gray-100">
+                    @include('partials.user_list', ['users' => $users])
                 </tbody>
             </table>
         </div>
     </div>
 </div>
+
+<script>
+/**
+ * Logika Live Search untuk pencarian user pending
+ * Mengambil data dari server tanpa refresh halaman
+ */
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('user-live-search');
+    const tableBody = document.getElementById('user-table-body');
+
+    if (searchInput) {
+        searchInput.addEventListener('keyup', function() {
+            const query = this.value;
+
+            // Memanggil route search.users via AJAX
+            fetch(`{{ route('search.users') }}?query=${query}`, {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.text())
+            .then(html => {
+                // Mengupdate isi tabel dengan hasil pencarian
+                tableBody.innerHTML = html;
+                
+                // Me-render ulang icon Lucide setelah konten berubah
+                if (typeof lucide !== 'undefined') {
+                    lucide.createIcons();
+                }
+            })
+            .catch(error => console.error('Error fetching search results:', error));
+        });
+    }
+});
+</script>
 @endsection

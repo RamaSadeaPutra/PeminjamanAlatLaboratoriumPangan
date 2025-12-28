@@ -17,6 +17,7 @@ use App\Http\Controllers\SearchController;
 |--------------------------------------------------------------------------
 */
 Route::get('/search', [SearchController::class, 'search'])->name('search');
+Route::get('/search-users', [SearchController::class, 'searchUsers'])->name('search.users');
 
 /*
 |--------------------------------------------------------------------------
