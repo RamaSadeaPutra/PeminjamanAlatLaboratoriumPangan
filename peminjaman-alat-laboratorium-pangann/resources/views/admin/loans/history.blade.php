@@ -57,12 +57,14 @@
     <table width="100%" cellpadding="12" style="border-collapse: collapse;">
         <thead style="background:#f1f5f9;">
             <tr>
-                <th>User</th>
-                <th>Alat</th>
-                <th>Jumlah</th>
-                <th>Tgl Pinjam</th>
-                <th>Tgl Kembali</th>
-                <th>Status</th>
+                <th style="text-align: center;">User</th>
+                <th style="text-align: center;">NIM</th>
+                <th style="text-align: center;">Email</th>
+                <th style="text-align: center;">Alat</th>
+                <th style="text-align: center;">Jumlah</th>
+                <th style="text-align: center;">Tgl Pinjam</th>
+                <th style="text-align: center;">Tgl Kembali</th>
+                <th style="text-align: center;">Status</th>
             </tr>
         </thead>
         <tbody id="history-table-body">

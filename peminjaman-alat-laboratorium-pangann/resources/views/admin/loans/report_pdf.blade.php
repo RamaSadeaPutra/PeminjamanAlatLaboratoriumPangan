@@ -26,25 +26,29 @@
     <table>
         <thead>
             <tr>
-                <th width="5%">No</th>
-                <th>Peminjam</th>
-                <th>Nama Alat</th>
-                <th>Jumlah</th>
-                <th>Pinjam</th>
-                <th>Kembali</th>
-                <th>Status</th>
+                <th width="5%" style="text-align: center;">No</th>
+                <th style="text-align: center;">Nama Peminjam</th>
+                <th style="text-align: center;">NIM</th>
+                <th style="text-align: center;">Email</th>
+                <th style="text-align: center;">Nama Alat</th>
+                <th style="text-align: center;">Jumlah</th>
+                <th style="text-align: center;">Pinjam</th>
+                <th style="text-align: center;">Kembali</th>
+                <th style="text-align: center;">Status</th>
             </tr>
         </thead>
         <tbody>
             @foreach($loans as $loan)
             <tr>
-                <td>{{ $loop->iteration }}</td>
-                <td>{{ $loan->user->name ?? '-' }}</td>
-                <td>{{ $loan->tool->tool_name ?? '-' }}</td>
-                <td>{{ $loan->jumlah }}</td>
-                <td>{{ $loan->tanggal_pinjam }}</td>
-                <td>{{ $loan->tanggal_kembali ?? '-' }}</td>
-                <td>
+                <td style="text-align: center;">{{ $loop->iteration }}</td>
+                <td style="text-align: center;"><strong>{{ $loan->user->name ?? '-' }}</strong></td>
+                <td style="text-align: center;">{{ $loan->user->nim ?? '-' }}</td>
+                <td style="text-align: center; font-size: 10px;">{{ $loan->user->email ?? '-' }}</td>
+                <td style="text-align: center;">{{ $loan->tool->tool_name ?? '-' }}</td>
+                <td style="text-align: center;">{{ $loan->jumlah }}</td>
+                <td style="text-align: center;">{{ $loan->tanggal_pinjam }}</td>
+                <td style="text-align: center;">{{ $loan->tanggal_kembali ?? '-' }}</td>
+                <td style="text-align: center;">
                     @if($loan->status === 'kembali')
                         <span class="status-kembali">Selesai</span>
                     @else

@@ -55,13 +55,15 @@
     <table>
         <thead>
             <tr>
-                <th>No</th>
-                <th>Peminjam</th>
-                <th>Alat</th>
-                <th>Jumlah</th>
-                <th>Tgl Pinjam</th>
-                <th>Tgl Kembali</th>
-                <th>Status</th>
+                <th style="text-align: center;">No</th>
+                <th style="text-align: center;">Nama Peminjam</th>
+                <th style="text-align: center;">NIM</th>
+                <th style="text-align: center;">Email</th>
+                <th style="text-align: center;">Alat</th>
+                <th style="text-align: center;">Jumlah</th>
+                <th style="text-align: center;">Tgl Pinjam</th>
+                <th style="text-align: center;">Tgl Kembali</th>
+                <th style="text-align: center;">Status</th>
             </tr>
         </thead>
 
