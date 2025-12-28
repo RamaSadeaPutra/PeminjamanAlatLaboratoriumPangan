@@ -90,4 +90,34 @@ class SearchController extends Controller
 
         return abort(404);
     }
+
+    /**
+     * Fungsi untuk mencari riwayat peminjaman yang sudah selesai (kembali atau ditolak)
+     * Digunakan untuk fitur Live Search di halaman riwayat admin
+     */
+    public function searchHistory(Request $request)
+    {
+        $query = $request->input('query');
+
+        // Mencari loans yang sudah selesai (kembali, ditolak)
+        $loans = Loan::with(['user', 'tool'])
+            ->whereIn('status', ['kembali', 'ditolak'])
+            ->where(function($q) use ($query) {
+                $q->whereHas('user', function($u) use ($query) {
+                    $u->where('name', 'LIKE', "%{$query}%");
+                })
+                ->orWhereHas('tool', function($t) use ($query) {
+                    $t->where('tool_name', 'LIKE', "%{$query}%");
+                });
+            })
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        // Mengembalikan partial view untuk update tabel secara dinamis
+        if ($request->ajax()) {
+            return view('partials.history_list', compact('loans'))->render();
+        }
+
+        return abort(404);
+    }
 }
