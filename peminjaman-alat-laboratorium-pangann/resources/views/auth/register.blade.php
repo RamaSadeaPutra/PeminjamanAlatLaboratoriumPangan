@@ -85,7 +85,7 @@
                            placeholder="••••••••"
                            required>
                     <button type="button" class="password-toggle" onclick="togglePassword('password', 'eyeIcon')">
-                        <i data-lucide="eye" id="eyeIcon" class="w-5 h-5"></i>
+                        <i data-lucide="eye-off" id="eyeIcon" class="w-5 h-5"></i>
                     </button>
                 </div>
                 @error('password')
@@ -105,7 +105,7 @@
                            placeholder="••••••••"
                            required>
                     <button type="button" class="password-toggle" onclick="togglePassword('password_confirmation', 'eyeIconConfirm')">
-                        <i data-lucide="eye" id="eyeIconConfirm" class="w-5 h-5"></i>
+                        <i data-lucide="eye-off" id="eyeIconConfirm" class="w-5 h-5"></i>
                     </button>
                 </div>
             </div>
@@ -139,10 +139,10 @@
 
             if (input.type === "password") {
                 input.type = "text";
-                icon.setAttribute("data-lucide", "eye-off");
+                icon.setAttribute("data-lucide", "eye");
             } else {
                 input.type = "password";
-                icon.setAttribute("data-lucide", "eye");
+                icon.setAttribute("data-lucide", "eye-off");
             }
 
             lucide.createIcons();

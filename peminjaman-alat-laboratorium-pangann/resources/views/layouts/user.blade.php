@@ -16,6 +16,11 @@
 <div class="sidebar flex flex-col gap-2">
     <h2>🔬 LAB USER</h2>
 
+    <a href="{{ route('profile.show') }}"
+       class="{{ request()->routeIs('profile.show') ? 'active' : '' }}">
+        <i data-lucide="user"></i> Profil
+    </a>
+
     <a href="{{ route('user.tools.index') }}"
        class="{{ request()->routeIs('user.tools.*') ? 'active' : '' }}">
         <i data-lucide="microscope"></i> Daftar Alat
@@ -28,12 +33,11 @@
        class="{{ request()->routeIs('user.loans.history') ? 'active' : '' }}">
         <i data-lucide="history"></i> Riwayat Peminjaman
     </a>
-
-     <form action="{{ route('logout') }}" method="POST" class="mt-90 p-4 border-t border-slate-200">
+     <form action="{{ route('logout') }}" method="POST" class="mt-auto p-4 border-t border-slate-200">
     
     @csrf
     <button
-        class="w-full flex items-center gap-9 px-4 py-2
+        class="w-full flex items-center gap-3 px-4 py-2
                bg-red-500 text-white
                hover:bg-red-700
                rounded-xl font-semibold

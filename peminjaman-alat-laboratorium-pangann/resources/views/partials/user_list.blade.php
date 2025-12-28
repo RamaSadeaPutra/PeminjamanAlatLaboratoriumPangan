@@ -15,8 +15,8 @@
                 {{ ucfirst($user->status) }}
             </span>
         </td>
-        <td class="px-6 py-4 text-right">
-            <div class="flex items-center justify-end gap-2">
+        <td class="px-6 py-4 text-center">
+            <div class="flex items-center justify-center gap-2">
                 <form action="{{ route('admin.users.approve', $user) }}" method="POST" class="inline">
                     @csrf
                     <button type="submit" 

@@ -81,6 +81,12 @@
     .login-alert-success i {
         @apply text-emerald-600;
     }
+
+    /* Hide browser-native reveal icon in Edge/IE */
+    input::-ms-reveal,
+    input::-ms-clear {
+        display: none;
+    }
 }
 
 /*================================================== End Login Page========================================== */

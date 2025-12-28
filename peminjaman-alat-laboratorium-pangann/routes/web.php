@@ -11,6 +11,7 @@ use App\Http\Controllers\User\ToolController as UserToolController;
 use App\Http\Controllers\RegisteredUserController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\FilterController;
+use App\Http\Controllers\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -73,6 +74,14 @@ Route::middleware(['auth', 'user'])
 
     Route::post('/loans', [LoanController::class, 'store'])
         ->name('loans.store');
+});
+
+// Profile routes
+Route::middleware(['auth', 'user'])->group(function () {
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+    Route::get('/profile/password', [ProfileController::class, 'editPassword'])->name('profile.editPassword');
+    Route::post('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.updatePassword');
+    Route::post('/profile/photo', [ProfileController::class, 'updatePhoto'])->name('profile.updatePhoto');
 });
 
 /*

@@ -39,7 +39,7 @@
                         <th class="px-6 py-4 text-sm font-semibold text-gray-600">Email</th>
                         <th class="px-6 py-4 text-sm font-semibold text-gray-600">Tanggal Daftar</th>
                         <th class="px-6 py-4 text-sm font-semibold text-gray-600">Status</th>
-                        <th class="px-6 py-4 text-sm font-semibold text-gray-600 text-right">Aksi</th>
+                        <th class="px-6 py-4 text-sm font-semibold text-gray-600 text-center">Aksi</th>
                     </tr>
                 </thead>
                 <tbody id="user-table-body" class="divide-y divide-gray-100">
