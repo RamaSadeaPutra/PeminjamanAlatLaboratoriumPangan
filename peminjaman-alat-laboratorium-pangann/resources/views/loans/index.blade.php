@@ -11,9 +11,20 @@
         </p>
     </div>
 
-    <a href="{{ route('user.tools.index') }}" class="btn-primary">
-        <i data-lucide="plus"></i> Tambah Peminjaman
-    </a>
+    <div style="display: flex; gap: 12px; align-items: center;">
+        <!-- Input Live Search Pinjaman Saya -->
+        <div style="position: relative;">
+            <input type="text" id="my-loan-search" placeholder="Cari nama alat..." 
+                   style="padding: 8px 12px; padding-left: 35px; border: 1px solid #e2e8f0; border-radius: 8px; outline: none; font-size: 14px; width: 220px;">
+            <div style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: #94a3b8;">
+                <i data-lucide="search" style="width: 16px; height: 16px;"></i>
+            </div>
+        </div>
+
+        <a href="{{ route('user.tools.index') }}" class="btn-primary">
+            <i data-lucide="plus"></i> Tambah Peminjaman
+        </a>
+    </div>
 </div>
 
 @if(session('success'))
@@ -46,51 +57,46 @@
             </tr>
         </thead>
 
-        <tbody>
-            @forelse ($loans as $loan)
-            <tr>
-                <td>{{ $loop->iteration }}</td>
-                <td style="font-weight:600;">{{ $loan->user->name ?? '-' }}</td>
-                <td>{{ $loan->tool->tool_name ?? '-' }}</td>
-                <td>{{ $loan->jumlah }}</td>
-                <td>{{ $loan->tanggal_pinjam }}</td>
-                <td>{{ $loan->tanggal_kembali ?? '-' }}</td>
-
-                {{-- STATUS --}}
-                <td>
-      @if($loan->status === 'menunggu')
-    <span style="color:#f59e0b; font-weight:600;">
-        Menunggu Persetujuan
-    </span>
-@elseif($loan->status === 'disetujui')
-    <span style="color:#22c55e; font-weight:600;">
-        Disetujui
-    </span>
-@elseif($loan->status === 'dipinjam')
-    <span style="color:#3b82f6; font-weight:600;">
-        Sedang Dipinjam
-    </span>
-@else
-    <span style="color:#ef4444; font-weight:600;">
-        {{ $loan->status }}
-    </span>
-@endif
-
-                </td>
-
-               
-            </tr>
-            @empty
-            <tr>
-                <td colspan="8" style="text-align:center; padding:40px; color:#94a3b8;">
-                    <i data-lucide="inbox" size="40"></i>
-                    <p style="margin-top:10px;">Belum ada data peminjaman</p>
-                </td>
-            </tr>
-            @endforelse
+        <tbody id="my-loan-table-body">
+            @include('partials.my_loan_list', ['loans' => $loans])
         </tbody>    
     </table>
 </div>
+
+<script>
+/**
+ * Logika Live Search untuk menu "Pinjaman Saya"
+ * Memungkinkan user mencari alat yang sedang mereka pinjam secara instan
+ */
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('my-loan-search');
+    const tableBody = document.getElementById('my-loan-table-body');
+
+    if (searchInput) {
+        searchInput.addEventListener('keyup', function() {
+            const query = this.value;
+
+            // Fetch data via AJAX ke route search.myloans
+            fetch(`{{ route('search.myloans') }}?query=${query}`, {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.text())
+            .then(html => {
+                // Update isi tabel
+                tableBody.innerHTML = html;
+                
+                // Refresh icon Lucide
+                if (typeof lucide !== 'undefined') {
+                    lucide.createIcons();
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    }
+});
+</script>
 
 <script>
     lucide.createIcons();

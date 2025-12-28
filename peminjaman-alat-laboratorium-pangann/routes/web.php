@@ -20,6 +20,7 @@ Route::get('/search', [SearchController::class, 'search'])->name('search');
 Route::get('/search-users', [SearchController::class, 'searchUsers'])->name('search.users');
 Route::get('/search-loans', [SearchController::class, 'searchLoans'])->name('search.loans');
 Route::get('/search-history', [SearchController::class, 'searchHistory'])->name('search.history');
+Route::get('/search-myloans', [SearchController::class, 'searchMyLoans'])->name('search.myloans');
 
 /*
 |--------------------------------------------------------------------------

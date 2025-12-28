@@ -120,4 +120,31 @@ class SearchController extends Controller
 
         return abort(404);
     }
+
+    /**
+     * Fungsi untuk mencari pinjaman milik user sendiri (User Dashboard)
+     * Memberikan hasil instan saat user mencari di menu "Pinjaman Saya"
+     */
+    public function searchMyLoans(Request $request)
+    {
+        $query = $request->input('query');
+        $userId = auth()->id();
+
+        // Mencari loans milik user yang sedang login berdasarkan nama alat
+        $loans = Loan::with(['tool', 'user'])
+            ->where('user_id', $userId)
+            ->whereIn('status', ['menunggu', 'disetujui', 'dipinjam'])
+            ->whereHas('tool', function($t) use ($query) {
+                $t->where('tool_name', 'LIKE', "%{$query}%");
+            })
+            ->latest()
+            ->get();
+
+        // Mengirimkan partial view khusus pinjaman user
+        if ($request->ajax()) {
+            return view('partials.my_loan_list', compact('loans'))->render();
+        }
+
+        return abort(404);
+    }
 }
