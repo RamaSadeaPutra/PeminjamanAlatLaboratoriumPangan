@@ -1,13 +1,33 @@
 @extends('layouts.app')
 
-@section('title', 'Persetujuan Peminjaman')
+@section('title', 'Pengajuan Peminjaman')
+@section('main_class', 'p-4')
 
 @section('content')
-<div style="max-width: 1100px; margin:auto; padding:32px">
+<div>
 
-    <h2 style="font-size:22px; font-weight:700; margin-bottom:20px;">
-        Pengajuan Peminjaman
-    </h2>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 16px;">
+        <!-- Header removed -->
+
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <!-- Input Live Search Loan -->
+            <div style="position: relative;">
+                <input type="text" id="loan-live-search" placeholder="Cari user atau alat..." 
+                       style="padding: 8px 12px; padding-left: 35px; border: 1px solid #e2e8f0; border-radius: 8px; outline: none; font-size: 14px; width: 220px;">
+                <div style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: #94a3b8;">
+                    <i data-lucide="search" style="width: 16px; height: 16px;"></i>
+                </div>
+            </div>
+
+            <!-- Filter Status -->
+            <select id="filter-status-loan" style="padding: 8px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; outline: none; background: white;">
+                <option value="">Semua Status</option>
+                <option value="menunggu">Menunggu</option>
+                <option value="disetujui">Disetujui</option>
+                <option value="dipinjam">Dipinjam</option>
+            </select>
+        </div>
+    </div>
 
     @if(session('success'))
         <div style="color:green; margin-bottom:10px;">
@@ -24,75 +44,62 @@
     <table width="100%" cellpadding="12" style="border-collapse: collapse;">
         <thead style="background:#f1f5f9;">
             <tr>
-                <th>User</th>
-                <th>Alat</th>
-                <th>Jumlah</th>
-                <th>Tgl Pinjam</th>
-                <th>Tgl Kembali</th>
-                <th>Status</th>
-                <th>Aksi</th>
+                <th style="text-align: center;">User</th>
+                <th style="text-align: center;">NIM</th>
+                <th style="text-align: center;">Email</th>
+                <th style="text-align: center;">Alat</th>
+                <th style="text-align: center;">Jumlah</th>
+                <th style="text-align: center;">Tgl Pinjam</th>
+                <th style="text-align: center;">Tgl Kembali</th>
+                <th style="text-align: center;">Status</th>
+                <th style="text-align: center;">Aksi</th>
             </tr>
         </thead>
-        <tbody>
-            @foreach($loans as $loan)
-            <tr style="border-bottom:1px solid #e5e7eb;">
-                <td>{{ $loan->user->name }}</td>
-                <td>{{ $loan->tool->tool_name }}</td>
-                <td>{{ $loan->jumlah }}</td>
-                <td>{{ $loan->tanggal_pinjam }}</td>
-                <td>{{ $loan->tanggal_kembali }}</td>
-                <td>
-                    @if($loan->status === 'menunggu')
-                        <span style="color:#f59e0b;">Menunggu</span>
-                    @elseif($loan->status === 'disetujui')
-                        <span style="color:#22c55e;">Disetujui</span>
-                    @elseif($loan->status === 'dipinjam')
-                        <span style="color:#3b82f6;">Dipinjam</span>
-                    @elseif($loan->status === 'kembali')
-                        <span style="color:#64748b;">Dikembalikan</span>
-                    @elseif($loan->status === 'ditolak')
-                        <span style="color:#ef4444;">Ditolak</span>
-                    @endif
-                </td>
-                <td>
-                    @if($loan->status === 'menunggu')
-                        <form action="{{ route('admin.loans.approve', $loan->id) }}" method="POST" style="display:inline">
-                            @csrf
-                            <button style="background:#22c55e;color:white;border:none;padding:6px 12px;border-radius:6px;">
-                                ACC
-                            </button>
-                        </form>
-
-                        <form action="{{ route('admin.loans.reject', $loan->id) }}" method="POST" style="display:inline">
-                            @csrf
-                            <button style="background:#ef4444;color:white;border:none;padding:6px 12px;border-radius:6px;">
-                                Tolak
-                            </button>
-                        </form>
-                    @elseif($loan->status === 'disetujui')
-                        <form action="{{ route('admin.loans.borrowed', $loan->id) }}" method="POST" style="display:inline">
-                            @csrf
-                            <button style="background:#3b82f6;color:white;border:none;padding:6px 12px;border-radius:6px;">
-                                Tandai Dipinjam
-                            </button>
-                        </form>
-                    @elseif($loan->status === 'dipinjam')
-                        <form action="{{ route('admin.loans.returned', $loan->id) }}" method="POST" style="display:inline">
-                            @csrf
-                            <button style="background:#64748b;color:white;border:none;padding:6px 12px;border-radius:6px;">
-                                Tandai Kembali
-                            </button>
-                        </form>
-                    @elseif($loan->status === 'kembali')
-                        <span style="color:#64748b;">Selesai</span>
-                    @else
-                        -
-                    @endif
-                </td>
-            </tr>
-            @endforeach
+        <tbody id="loan-table-body">
+            @include('partials.loan_list', ['loans' => $loans])
         </tbody>
     </table>
 
 </div>
+
+<script>
+/**
+ * Logika Filter & Live Search Pengajuan Peminjaman
+ */
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('loan-live-search');
+    const statusSelect = document.getElementById('filter-status-loan');
+    const tableBody = document.getElementById('loan-table-body');
+
+    function performLoanFilter() {
+        const query = searchInput.value;
+        const status = statusSelect.value;
+
+        const params = new URLSearchParams({
+            query: query,
+            status: status
+        });
+
+        fetch(`{{ route('filter.loans') }}?${params.toString()}`, {
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        })
+        .then(response => response.text())
+        .then(html => {
+            tableBody.innerHTML = html;
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
+    if (searchInput) {
+        searchInput.addEventListener('keyup', performLoanFilter);
+    }
+
+    if (statusSelect) {
+        statusSelect.addEventListener('change', performLoanFilter);
+    }
+});
+</script>
 @endsection
