@@ -86,7 +86,7 @@
         </header>
 
         <!-- CONTENT -->
-        <main class="p-8">
+        <main class="@yield('main_class', 'p-8')">
             @yield('content')
         </main>
     </div>
