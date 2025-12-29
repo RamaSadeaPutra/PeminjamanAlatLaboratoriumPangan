@@ -1,79 +1,155 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-
-  @vite(['resources/css/app.css', 'resources/js/app.js'])
     <meta charset="UTF-8">
-    <title>@yield('title')</title>
-
- 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@yield('title') | User Lab</title>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Flatpickr CSS & JS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .sidebar-glow { background-image: radial-gradient(circle at 100% 0%, rgba(37, 99, 235, 0.05) 0%, transparent 50%); }
+    </style>
 </head>
 
-<body>
+<body class="bg-slate-50 text-slate-800 antialiased">
+<div class="min-h-screen">
 
-<!-- ================= SIDEBAR ================= -->
-<div class="sidebar flex flex-col gap-2">
-    <h2>🔬 LAB USER</h2>
+    <!-- BACKDROP (Mobile only) -->
+    <div id="sidebar-overlay" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-40 hidden lg:hidden"></div>
 
-    <a href="{{ route('profile.show') }}"
-       class="{{ request()->routeIs('profile.show') ? 'active' : '' }}">
-        <i data-lucide="user"></i> Profil
-    </a>
-
-    <a href="{{ route('user.tools.index') }}"
-       class="{{ request()->routeIs('user.tools.*') ? 'active' : '' }}">
-        <i data-lucide="microscope"></i> Daftar Alat
-    </a>
- <a href="{{ route('user.loans.index') }}"
-       class="{{ (request()->routeIs('user.loans.index') || request()->routeIs('user.loans.create') || request()->routeIs('user.loans.store')) ? 'active' : '' }}">
-        <i data-lucide="test-tubes"></i> Pinjaman Saya
-    </a>
-    <a href="{{ route('user.loans.history') }}"
-       class="{{ request()->routeIs('user.loans.history') ? 'active' : '' }}">
-        <i data-lucide="history"></i> Riwayat Peminjaman
-    </a>
-     <form action="{{ route('logout') }}" method="POST" class="mt-auto p-4 border-t border-slate-200">
-    
-    @csrf
-    <button
-        class="w-full flex items-center gap-3 px-4 py-2
-               bg-red-500 text-white
-               hover:bg-red-700
-               rounded-xl font-semibold
-               transition-all duration-200">
-        <i data-lucide="log-out" class="w-4 h-4"></i>
-        Logout
-    </button>
-</form>
-</div>
-
-<!-- ================= MAIN ================= -->
-<div class="main">
-    <div class="usermain">    
-    <!-- TOPBAR -->
-    <div class="topbar">
-        <h1>@yield('title')</h1>
-
-        <div class="user-info">
-            {{ auth()->user()->name ?? 'User' }}
-            <div class="user-avatar">
-                {{ strtoupper(substr(auth()->user()->name ?? 'U',0,1)) }}
+    <!-- SIDEBAR -->
+    <aside id="user-sidebar" class="w-72 bg-white border-r border-slate-200 flex flex-col fixed h-screen z-50 transition-all duration-300 sidebar-glow -translate-x-full lg:translate-x-0">
+        <div class="px-8 py-10">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-200 rotate-3 group-hover:rotate-0 transition-transform">
+                    <i data-lucide="flask-conical" class="w-6 h-6 text-white text-bold"></i>
+                </div>
+                <div>
+                     <span class="block text-lg font-black text-slate-800 tracking-tight leading-none uppercase">LAB <span class="text-blue-600">PANGAN</span></span>
+                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1 block">User Panel</span>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- CONTENT -->
-    <div class="content">
-        @yield('content')
+        <nav class="flex-1 px-4 space-y-1.5 overflow-y-auto custom-scrollbar">
+            <div class="px-4 pb-2">
+                <span class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Navigasi</span>
+            </div>
+
+            <a href="{{ route('profile.show') }}"
+               class="group flex items-center gap-3.5 px-4 py-3 rounded-2xl transition-all duration-300
+               {{ request()->routeIs('profile.show') ? 'bg-blue-600 text-white shadow-xl shadow-blue-100 font-bold' : 'text-slate-500 hover:bg-slate-50 hover:text-blue-600' }}">
+                <i data-lucide="user-circle" class="w-5 h-5 transition-transform group-hover:scale-110"></i>
+                <span class="text-sm">Profil Saya</span>
+            </a>
+
+            <a href="{{ route('user.tools.index') }}"
+               class="group flex items-center gap-3.5 px-4 py-3 rounded-2xl transition-all duration-300
+               {{ request()->routeIs('user.tools.*') ? 'bg-blue-600 text-white shadow-xl shadow-blue-100 font-bold' : 'text-slate-500 hover:bg-slate-50 hover:text-blue-600' }}">
+                <i data-lucide="microscope" class="w-5 h-5 transition-transform group-hover:scale-110"></i>
+                <span class="text-sm">Daftar Alat</span>
+            </a>
+
+            <div class="px-4 pt-6 pb-2">
+                <span class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Aktivitas</span>
+            </div>
+
+            <a href="{{ route('user.loans.index') }}"
+               class="group flex items-center gap-3.5 px-4 py-3 rounded-2xl transition-all duration-300
+               {{ (request()->routeIs('user.loans.index') || request()->routeIs('user.loans.create') || request()->routeIs('user.loans.store')) ? 'bg-blue-600 text-white shadow-xl shadow-blue-100 font-bold' : 'text-slate-500 hover:bg-slate-50 hover:text-blue-600' }}">
+                <i data-lucide="package-search" class="w-5 h-5 transition-transform group-hover:scale-110"></i>
+                <span class="text-sm">Pinjaman Aktif</span>
+            </a>
+
+            <a href="{{ route('user.loans.history') }}"
+               class="group flex items-center gap-3.5 px-4 py-3 rounded-2xl transition-all duration-300
+               {{ request()->routeIs('user.loans.history') ? 'bg-blue-600 text-white shadow-xl shadow-blue-100 font-bold' : 'text-slate-500 hover:bg-slate-50 hover:text-blue-600' }}">
+                <i data-lucide="calendar-clock" class="w-5 h-5 transition-transform group-hover:scale-110"></i>
+                <span class="text-sm">Riwayat Saya</span>
+            </a>
+        </nav>
+
+        <div class="p-4 mt-auto">
+            <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <button class="w-full group flex items-center justify-center gap-3 px-4 py-4 bg-red-50 text-red-600 hover:bg-red-600 hover:text-white rounded-[22px] font-bold text-xs uppercase tracking-widest transition-all duration-300 active:scale-95 border border-red-100">
+                    <i data-lucide="log-out" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
+                    Keluar Sistem
+                </button>
+            </form>
+        </div>
+    </aside>
+
+    <!-- MAIN AREA -->
+    <div class="ml-0 lg:ml-72 flex flex-col min-h-screen transition-all duration-300">
+        <!-- TOPBAR -->
+        <header class="bg-white/80 backdrop-blur-md border-b border-slate-200 px-4 md:px-10 py-5 flex justify-between items-center sticky top-0 z-40">
+            <div class="flex items-center gap-4">
+                <!-- Mobile Menu Toggle -->
+                <button id="sidebar-toggle" class="lg:hidden p-2 text-slate-500 hover:bg-slate-50 rounded-xl transition-all">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+                <div class="flex flex-col">
+                    <h1 class="font-extrabold text-xl text-slate-800 tracking-tight">@yield('title')</h1>
+                    <div class="flex items-center gap-2 mt-0.5">
+                        <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest italic">Akses Mahasiswa</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-6">
+                <div class="flex items-center gap-4">
+                    <div class="flex flex-col items-end">
+                        <span class="text-sm font-black text-slate-800 tracking-tight">{{ auth()->user()->name }}</span>
+                        <span class="text-[10px] font-bold text-blue-600 uppercase tracking-widest">{{ auth()->user()->nim }}</span>
+                    </div>
+                    <div class="w-11 h-11 bg-slate-100 rounded-2xl flex items-center justify-center border-2 border-white shadow-sm overflow-hidden group hover:border-blue-100 transition-all cursor-pointer">
+                        @if(auth()->user()->photo_path)
+                            <img src="{{ asset('storage/' . auth()->user()->photo_path) }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform">
+                        @else
+                            <i data-lucide="user-round" class="w-5 h-5 text-slate-400 group-hover:text-blue-500 transition-colors"></i>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- CONTENT -->
+        <main class="p-4 md:p-10 flex-1">
+            @yield('content')
+        </main>
     </div>
-</div> 
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script>
     lucide.createIcons();
+
+    // Mobile Sidebar Toggle Logic
+    const sidebar = document.getElementById('user-sidebar');
+    const toggleBtn = document.getElementById('sidebar-toggle');
+    const overlay = document.getElementById('sidebar-overlay');
+
+    function toggleSidebar() {
+        sidebar.classList.toggle('-translate-x-full');
+        overlay.classList.toggle('hidden');
+        document.body.classList.toggle('overflow-hidden');
+    }
+
+    if (toggleBtn) {
+        toggleBtn.addEventListener('click', toggleSidebar);
+    }
+
+    if (overlay) {
+        overlay.addEventListener('click', toggleSidebar);
+    }
 </script>
 </body>
 </html>

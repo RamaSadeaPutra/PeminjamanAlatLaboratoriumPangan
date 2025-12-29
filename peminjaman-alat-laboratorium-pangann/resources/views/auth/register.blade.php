@@ -7,148 +7,171 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    </style>
 </head>
-<body class="login-page">
 
-    <div class="login-card" style="margin-top: 2rem; margin-bottom: 2rem;">
-        <div class="brand-icon-wrapper">
-            <i data-lucide="flask-conical" class="w-8 h-8"></i>
+<body class="bg-slate-50 min-h-screen flex items-center justify-center p-4 lg:p-10 relative overflow-hidden">
+
+    <!-- Background Blur -->
+    <div class="absolute -top-48 -left-48 w-[500px] h-[500px] bg-blue-100 rounded-full blur-[120px] opacity-40"></div>
+    <div class="absolute -bottom-48 -right-48 w-[500px] h-[500px] bg-sky-100 rounded-full blur-[120px] opacity-40"></div>
+
+    <div class="relative w-full max-w-lg">
+
+        <!-- Brand -->
+        <div class="flex flex-col items-center mb-6">
+            <div class="w-14 h-14 bg-blue-600 rounded-3xl shadow-xl shadow-blue-200 flex items-center justify-center mb-3 -rotate-6 hover:rotate-0 transition-all duration-700">
+                <i data-lucide="flask-conical" class="w-7 h-7 text-white"></i>
+            </div>
+            <h1 class="text-lg font-black text-slate-800 text-center tracking-tighter leading-tight uppercase">
+                PEMBUATAN AKUN <br>
+                <span class="text-blue-600">INVENTARIS LAB</span>
+            </h1>
         </div>
 
-        <h2 class="login-title">
-            PENDAFTARAN AKUN BARU
-        </h2>
+        <!-- Card -->
+        <div class="bg-white rounded-[24px] md:rounded-[28px] shadow-2xl shadow-slate-200 border border-slate-100 p-4 md:p-7 relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-40 h-40 bg-slate-50 rounded-bl-full -mr-20 -mt-20"></div>
 
-        <form method="POST" action="{{ route('register') }}">
-            @csrf
+            <div class="relative z-10">
 
-            <!-- NAME -->
-            <div class="login-input-group">
-                <label class="login-label">Nama Lengkap</label>
-                <div class="input-container">
-                    <i data-lucide="user" class="input-icon"></i>
-                    <input type="text"
-                           name="name"
-                           class="login-input"
-                           placeholder="Nama Lengkap"
-                           value="{{ old('name') }}"
-                           required autofocus>
+                <div class="mb-5">
+                    <h2 class="text-xl font-extrabold text-slate-800 tracking-tight">Daftar Sekarang</h2>
+                    <p class="text-xs text-slate-400 font-medium mt-1">
+                        Lengkapi data diri untuk akses laboratorium
+                    </p>
                 </div>
-                @error('name')
-                    <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
-                @enderror
-            </div>
 
-            <!-- NIM -->
-            <div class="login-input-group">
-                <label class="login-label">NIM</label>
-                <div class="input-container">
-                    <i data-lucide="id-card" class="input-icon"></i>
-                    <input type="text"
-                           name="nim"
-                           class="login-input"
-                           placeholder="Masukkan NIM"
-                           value="{{ old('nim') }}"
-                           required>
-                </div>
-                @error('nim')
-                    <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
-                @enderror
-            </div>
+                <form method="POST" action="{{ route('register') }}" class="space-y-4">
+                    @csrf
 
-            <!-- EMAIL -->
-            <div class="login-input-group">
-                <label class="login-label">Alamat Email</label>
-                <div class="input-container">
-                    <i data-lucide="mail" class="input-icon"></i>
-                    <input type="email"
-                           name="email"
-                           class="login-input"
-                           placeholder="contoh@lab.com"
-                           value="{{ old('email') }}"
-                           required>
-                </div>
-                @error('email')
-                    <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
-                @enderror
-            </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
-            <!-- PASSWORD -->
-            <div class="login-input-group">
-                <label class="login-label">Password</label>
-                <div class="input-container">
-                    <i data-lucide="lock" class="input-icon"></i>
-                    <input type="password"
-                           id="password"
-                           name="password"
-                           class="login-input pr-14"
-                           placeholder="••••••••"
-                           required>
-                    <button type="button" class="password-toggle" onclick="togglePassword('password', 'eyeIcon')">
-                        <i data-lucide="eye-off" id="eyeIcon" class="w-5 h-5"></i>
+                        <!-- Nama -->
+                        <div class="group">
+                            <label class="block text-[10px] font-black text-slate-500 uppercase tracking-[0.18em] mb-1 px-1">
+                                Nama Lengkap
+                            </label>
+                            <div class="relative">
+                                <input type="text" name="name" value="{{ old('name') }}" required autofocus
+                                    class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-[18px] text-slate-700 text-[13px] font-bold focus:ring-4 focus:ring-blue-100 focus:border-blue-500 outline-none transition-all placeholder:text-slate-300"
+                                    placeholder="Nama Lengkap">
+                                <i data-lucide="user" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-slate-400 group-focus-within:text-blue-500"></i>
+                            </div>
+                            @error('name')
+                                <p class="mt-1 text-red-500 text-[10px] font-bold">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- NIM -->
+                        <div class="group">
+                            <label class="block text-[10px] font-black text-slate-500 uppercase tracking-[0.18em] mb-1 px-1">
+                                NIM / ID
+                            </label>
+                            <div class="relative">
+                                <input type="text" name="nim" value="{{ old('nim') }}" required
+                                    class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-[18px] text-slate-700 text-[13px] font-bold font-mono focus:ring-4 focus:ring-blue-100 focus:border-blue-500 outline-none transition-all placeholder:text-slate-300"
+                                    placeholder="123456789">
+                                <i data-lucide="id-card" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-slate-400 group-focus-within:text-blue-500"></i>
+                            </div>
+                            @error('nim')
+                                <p class="mt-1 text-red-500 text-[10px] font-bold">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- Email -->
+                        <div class="group md:col-span-2">
+                            <label class="block text-[10px] font-black text-slate-500 uppercase tracking-[0.18em] mb-1 px-1">
+                                Email Kampus
+                            </label>
+                            <div class="relative">
+                                <input type="email" name="email" value="{{ old('email') }}" required
+                                    class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-[18px] text-slate-700 text-[13px] font-bold focus:ring-4 focus:ring-blue-100 focus:border-blue-500 outline-none transition-all placeholder:text-slate-300"
+                                    placeholder="student@unpas.ac.id">
+                                <i data-lucide="mail" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-slate-400 group-focus-within:text-blue-500"></i>
+                            </div>
+                            @error('email')
+                                <p class="mt-1 text-red-500 text-[10px] font-bold">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- Password -->
+                        <div class="group">
+                            <label class="block text-[10px] font-black text-slate-500 uppercase tracking-[0.18em] mb-1 px-1">
+                                Password
+                            </label>
+                            <div class="relative">
+                                <input type="password" id="password" name="password" required
+                                    class="w-full pl-10 pr-10 py-3 bg-slate-50 border border-slate-200 rounded-[18px] text-slate-700 text-[13px] font-bold focus:ring-4 focus:ring-blue-100 focus:border-blue-500 outline-none transition-all"
+                                    placeholder="••••••••">
+                                <i data-lucide="lock" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-slate-400"></i>
+                                <button type="button" onclick="togglePassword('password','eye1')" class="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400">
+                                    <i data-lucide="eye-off" id="eye1" class="w-4.5 h-4.5"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Confirm Password -->
+                        <div class="group">
+                            <label class="block text-[10px] font-black text-slate-500 uppercase tracking-[0.18em] mb-1 px-1">
+                                Ulangi Password
+                            </label>
+                            <div class="relative">
+                                <input type="password" id="password_confirmation" name="password_confirmation" required
+                                    class="w-full pl-10 pr-10 py-3 bg-slate-50 border border-slate-200 rounded-[18px] text-slate-700 text-[13px] font-bold focus:ring-4 focus:ring-blue-100 focus:border-blue-500 outline-none transition-all"
+                                    placeholder="••••••••">
+                                <i data-lucide="lock" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-slate-400"></i>
+                                <button type="button" onclick="togglePassword('password_confirmation','eye2')" class="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400">
+                                    <i data-lucide="eye-off" id="eye2" class="w-4.5 h-4.5"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Button -->
+                    <button type="submit"
+                        class="w-full py-3.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-black uppercase tracking-[0.1em] rounded-3xl shadow-xl shadow-blue-200 transition-all active:scale-[0.98] flex items-center justify-center gap-2 mt-5">
+                        <span>Daftar Sekarang</span>
+                        <i data-lucide="user-plus" class="w-4.5 h-4.5"></i>
                     </button>
+
+                </form>
+
+                <div class="mt-5 text-center">
+                    <p class="text-xs text-slate-400 font-medium">
+                        Sudah punya akun?
+                        <a href="{{ route('login') }}" class="text-blue-600 font-bold hover:underline">
+                            Login
+                        </a>
+                    </p>
                 </div>
-                @error('password')
-                    <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
-                @enderror
+
             </div>
+        </div>
 
-            <!-- CONFIRM PASSWORD -->
-            <div class="login-input-group">
-                <label class="login-label">Konfirmasi Password</label>
-                <div class="input-container">
-                    <i data-lucide="lock" class="input-icon"></i>
-                    <input type="password"
-                           id="password_confirmation"
-                           name="password_confirmation"
-                           class="login-input pr-14"
-                           placeholder="••••••••"
-                           required>
-                    <button type="button" class="password-toggle" onclick="togglePassword('password_confirmation', 'eyeIconConfirm')">
-                        <i data-lucide="eye-off" id="eyeIconConfirm" class="w-5 h-5"></i>
-                    </button>
-                </div>
-            </div>
-
-            <!-- BUTTON -->
-            <button type="submit" class="login-button">
-                <i data-lucide="user-plus" class="w-5 h-5"></i>
-                <span>Daftar</span>
-            </button>
-        </form>
-
-        <div class="mt-4 text-center">
-            <p class="text-sm text-gray-600">
-                Sudah punya akun? 
-                <a href="{{ route('login') }}" class="text-blue-600 hover:text-blue-800 font-medium">
-                    Login disini
-                </a>
+        <div class="mt-6 text-center">
+            <p class="text-[10px] text-slate-400 font-black uppercase tracking-[0.3em] opacity-60">
+                © 2025 Sistem Inventaris Teknologi Pangan
             </p>
-        </div>
-
-        <div class="login-footer">
-            © 2025 Sistem Informasi Laboratorium
         </div>
     </div>
 
-    <!-- SCRIPT -->
     <script>
         function togglePassword(inputId, iconId) {
             const input = document.getElementById(inputId);
             const icon = document.getElementById(iconId);
 
-            if (input.type === "password") {
-                input.type = "text";
-                icon.setAttribute("data-lucide", "eye");
-            } else {
-                input.type = "password";
-                icon.setAttribute("data-lucide", "eye-off");
-            }
-
+            input.type = input.type === "password" ? "text" : "password";
+            icon.setAttribute("data-lucide", input.type === "password" ? "eye-off" : "eye");
             lucide.createIcons();
         }
-
         lucide.createIcons();
     </script>
+
 </body>
 </html>

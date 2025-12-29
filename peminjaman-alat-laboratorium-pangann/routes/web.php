@@ -98,6 +98,19 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/users/pending', [UserApprovalController::class, 'index'])
         ->name('admin.users.pending');
     
+    Route::get('/users/active', [UserApprovalController::class, 'active'])
+        ->name('admin.users.active');
+    
+    Route::post('/users/{user}/password', [UserApprovalController::class, 'updatePassword'])
+        ->name('admin.users.password.update');
+
+    Route::delete('/users/{user}', [UserApprovalController::class, 'destroy'])
+        ->name('admin.users.destroy');
+
+    // riwayat registrasi (akun yang disetujui atau ditolak)
+    Route::get('/users/history', [UserApprovalController::class, 'history'])
+        ->name('admin.users.history');
+    
     Route::post('/users/{user}/approve', [UserApprovalController::class, 'approve'])
         ->name('admin.users.approve');
 

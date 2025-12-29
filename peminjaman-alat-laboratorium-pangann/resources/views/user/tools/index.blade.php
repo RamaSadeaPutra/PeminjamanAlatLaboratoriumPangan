@@ -8,159 +8,91 @@
 @section('content')
 
 
-<style>
-    /* ===== TABLE CARD ===== */
-.table-card {
-    background: white;
-    border-radius: 16px;
-    padding: 24px;
-    box-shadow: 0 10px 30px rgba(0,0,0,.06);
-}
-
-.table-title {
-    margin-bottom: 20px;
-    font-size: 20px;
-    font-weight: 700;
-}
-
-/* ===== TABLE ===== */
-.modern-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.modern-table th {
-    text-align: left;
-    font-size: 13px;
-    text-transform: uppercase;
-    color: #64748b;
-    padding: 14px 12px;
-    border-bottom: 1px solid #e2e8f0;
-}
-
-.modern-table td {
-    padding: 14px 12px;
-    border-bottom: 1px solid #f1f5f9;
-    font-size: 14px;
-}
-
-.modern-table tr:hover {
-    background: #f8fafc;
-}
-
-.font-bold {
-    font-weight: 600;
-}
-
-/* ===== BADGE ===== */
-.badge {
-    padding: 4px 10px;
-    font-size: 12px;
-    border-radius: 999px;
-    font-weight: 600;
-}
-
-.badge.good {
-    background: #dcfce7;
-    color: #166534;
-}
-
-.badge.bad {
-    background: #fee2e2;
-    color: #991b1b;
-}
-
-.badge-stock {
-    background: #eff6ff;
-    color: #1d4ed8;
-    padding: 4px 10px;
-    border-radius: 999px;
-    font-weight: 600;
-    font-size: 12px;
-}
-
-/* ===== BUTTON ===== */
-.btn-action {
-    background: #2563eb;
-    color: white;
-    padding: 8px 14px;
-    font-size: 13px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: 600;
-    transition: .2s;
-}
-
-.btn-action:hover {
-    background: #1e40af;
-}
-
-/* ===== EMPTY ===== */
-.empty {
-    text-align: center;
-    padding: 20px;
-    color: #64748b;
-}
-
-</style>
-
-<div class="table-card">
-    <div class="table-title" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
-        <span>Alat Tersedia</span>
+<div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+    <!-- Header Bar -->
+    <div class="p-5 md:p-8 border-b border-slate-100 flex flex-col xl:flex-row justify-between items-start xl:items-center gap-6 bg-slate-50/50">
+        <div class="flex-1 max-w-2xl">
+            <h2 class="text-2xl font-bold text-slate-800 tracking-tight flex items-center gap-2">
+                <i data-lucide="microscope" class="w-7 h-7 text-blue-600"></i>
+                Inventaris Alat Laboratorium
+            </h2>
+            <p class="text-sm text-slate-500 font-medium mt-1">Daftar alat tersedia yang dapat Anda pinjam untuk praktikum</p>
+        </div>
         
-        <!-- Filter & Pencarian -->
-        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+        <div class="flex flex-col items-start md:items-end gap-4 w-full xl:w-auto">
+            <div class="flex flex-wrap items-center justify-start md:justify-end gap-3 w-full">
             <!-- Filter Lab -->
-            <select id="filter-lab" class="filter-select" style="padding: 8px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; outline: none; background: white;">
-                <option value="">Semua Lab</option>
-                @foreach($labs as $lab)
-                    <option value="{{ $lab->id }}">{{ $lab->lab_name }}</option>
-                @endforeach
-            </select>
+            <div class="relative w-full md:w-44">
+                <select id="filter-lab" 
+                        class="w-full pl-4 pr-10 py-2.5 bg-white border border-slate-200 rounded-xl text-sm focus:ring-4 focus:ring-blue-100 focus:border-blue-500 outline-none transition-all appearance-none cursor-pointer text-slate-700 font-medium font-sans">
+                    <option value="">Semua Lab</option>
+                    @foreach($labs as $lab)
+                        <option value="{{ $lab->id }}">{{ $lab->lab_name }}</option>
+                    @endforeach
+                </select>
+                <div class="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
+                    <i data-lucide="chevron-down" class="w-4 h-4"></i>
+                </div>
+            </div>
 
             <!-- Filter Kategori -->
-            <select id="filter-category" class="filter-select" style="padding: 8px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; outline: none; background: white;">
-                <option value="">Semua Kategori</option>
-                @foreach($categories as $category)
-                    <option value="{{ $category->id }}">{{ $category->category_name }}</option>
-                @endforeach
-            </select>
+            <div class="relative w-full md:w-44">
+                <select id="filter-category" 
+                        class="w-full pl-4 pr-10 py-2.5 bg-white border border-slate-200 rounded-xl text-sm focus:ring-4 focus:ring-blue-100 focus:border-blue-500 outline-none transition-all appearance-none cursor-pointer text-slate-700 font-medium font-sans">
+                    <option value="">Semua Kategori</option>
+                    @foreach($categories as $category)
+                        <option value="{{ $category->id }}">{{ $category->category_name }}</option>
+                    @endforeach
+                </select>
+                <div class="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
+                    <i data-lucide="chevron-down" class="w-4 h-4"></i>
+                </div>
+            </div>
 
             <!-- Filter Kondisi -->
-            <select id="filter-condition" class="filter-select" style="padding: 8px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; outline: none; background: white;">
-                <option value="">Semua Kondisi</option>
-                <option value="baik">Baik</option>
-                <option value="rusak">Rusak</option>
-            </select>
+            <div class="relative w-full md:w-40">
+                <select id="filter-condition" 
+                        class="w-full pl-4 pr-10 py-2.5 bg-white border border-slate-200 rounded-xl text-sm focus:ring-4 focus:ring-blue-100 focus:border-blue-500 outline-none transition-all appearance-none cursor-pointer text-slate-700 font-medium font-sans">
+                    <option value="">Semua Kondisi</option>
+                    <option value="baik">Baik</option>
+                    <option value="rusak">Rusak</option>
+                </select>
+                <div class="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
+                    <i data-lucide="chevron-down" class="w-4 h-4"></i>
+                </div>
+            </div>
+            </div>
 
-            <!-- Pencarian -->
-            <div style="position: relative;">
+            <!-- Search -->
+            <div class="relative w-full md:w-[33.5rem] font-sans">
                 <input type="text" id="live-search" placeholder="Cari alat..." 
-                       style="padding: 8px 12px; padding-left: 35px; border: 1px solid #e2e8f0; border-radius: 8px; outline: none; font-size: 14px; width: 200px;">
-                <div style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: #94a3b8;">
-                    <i data-lucide="search" style="width: 16px; height: 16px;"></i>
+                       class="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm focus:ring-4 focus:ring-blue-100 focus:border-blue-500 outline-none transition-all">
+                <div class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400">
+                    <i data-lucide="search" class="w-4 h-4"></i>
                 </div>
             </div>
         </div>
     </div>
 
-    <table class="modern-table">
-        <thead>
-            <tr>
-                <th>No</th>
-                <th>Gambar</th>
-                <th>Nama Alat</th>
-                <th>Lab</th>
-                <th>Kategori</th>
-                <th>Stok</th>
-                <th>Kondisi</th>
-                <th>Aksi</th>
-            </tr>
-        </thead>
-        <tbody id="tool-table-body">
-            @include('partials.tool_list', ['tools' => $tools])
-        </tbody>
-    </table>
+    <div class="p-4 md:p-6 font-sans">
+        <table class="w-full text-left border-collapse">
+            <thead class="hidden md:table-header-group">
+                <tr class="bg-slate-50 text-slate-500 text-[11px] font-bold uppercase tracking-wider border-b border-slate-100">
+                    <th class="px-4 py-3 text-center text-[10px]">No</th>
+                   
+                    <th class="px-4 py-3 text-[10px]">Nama Alat</th>
+                    <th class="px-4 py-3 text-[10px]">Laboratorium</th>
+                    <th class="px-4 py-3 text-[10px]">Kategori</th>
+                    <th class="px-4 py-3 text-center text-[10px]">Stok</th>
+                    <th class="px-4 py-3 text-center text-[10px]">Kondisi</th>
+                    <th class="px-4 py-3 text-center text-[10px]">Aksi</th>
+                </tr>
+            </thead>
+            <tbody id="tool-table-body" class="block md:table-row-group divide-y-0 md:divide-y divide-slate-100">
+                @include('partials.tool_list', ['tools' => $tools])
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <script>

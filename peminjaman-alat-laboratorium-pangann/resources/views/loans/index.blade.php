@@ -3,74 +3,71 @@
 @section('title', 'Data Peminjaman')
 
 @section('content')
-<div class="content-header" style="margin-bottom:24px; display:flex; justify-content:space-between; align-items:center;">
-    <div>
-        <h1 style="font-size:22px; font-weight:700; margin:0;">Daftar Peminjaman Alat</h1>
-        <p style="margin:4px 0 0; color:#64748b; font-size:14px;">
-            Monitoring peminjaman alat laboratorium
-        </p>
-    </div>
-
-    <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
-        <!-- Filter Status -->
-        <select id="filter-status-myloan" style="padding: 8px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; outline: none; background: white;">
-            <option value="">Semua Status</option>
-            <option value="menunggu">Menunggu</option>
-            <option value="disetujui">Disetujui</option>
-            <option value="dipinjam">Sedang Dipinjam</option>
-        </select>
-
-        <!-- Input Live Search Pinjaman Saya -->
-        <div style="position: relative;">
-            <input type="text" id="my-loan-search" placeholder="Cari nama alat..." 
-                   style="padding: 8px 12px; padding-left: 35px; border: 1px solid #e2e8f0; border-radius: 8px; outline: none; font-size: 14px; width: 220px;">
-            <div style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: #94a3b8;">
-                <i data-lucide="search" style="width: 16px; height: 16px;"></i>
-            </div>
+<div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+    <!-- Header Bar -->
+    <div class="p-5 md:p-8 border-b border-slate-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 bg-slate-50/50">
+        <div>
+            <h2 class="text-2xl font-bold text-slate-800 tracking-tight">Daftar Peminjaman Alat</h2>
+            <p class="text-sm text-slate-500 font-medium mt-1">Monitoring status peminjaman alat laboratorium Anda</p>
         </div>
+        
+        <div class="flex flex-wrap lg:flex-nowrap items-center gap-3 w-full lg:w-auto">
+            <!-- Filter Status -->
+            <div class="relative w-full md:w-44">
+                <select id="filter-status-myloan" 
+                        class="w-full pl-4 pr-10 py-2.5 bg-white border border-slate-200 rounded-xl text-sm focus:ring-4 focus:ring-blue-100 focus:border-blue-500 outline-none transition-all appearance-none cursor-pointer text-slate-700 font-medium font-sans">
+                    <option value="">Semua Status</option>
+                    <option value="menunggu">Menunggu</option>
+                    <option value="disetujui">Disetujui</option>
+                    <option value="dipinjam">Sedang Dipinjam</option>
+                </select>
+                <div class="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
+                    <i data-lucide="chevron-down" class="w-4 h-4"></i>
+                </div>
+            </div>
 
-        <a href="{{ route('user.tools.index') }}" class="btn-primary">
-            <i data-lucide="plus"></i> Tambah Peminjaman
-        </a>
+            <!-- Search -->
+            <div class="relative flex-1 md:flex-none md:w-80 font-sans">
+                <input type="text" id="my-loan-search" placeholder="Cari nama alat..." 
+                       class="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm focus:ring-4 focus:ring-blue-100 focus:border-blue-500 outline-none transition-all">
+                <div class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400">
+                    <i data-lucide="search" class="w-4 h-4"></i>
+                </div>
+            </div>
+
+            <a href="{{ route('user.tools.index') }}" 
+               class="flex items-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold rounded-xl shadow-lg shadow-blue-200 transition-all active:scale-95 whitespace-nowrap">
+                <i data-lucide="plus" class="w-4 h-4 text-bold"></i>
+                Tambah Pinjaman
+            </a>
+        </div>
     </div>
-</div>
 
-@if(session('success'))
-    <div style="
-        margin-bottom:20px;
-        padding:14px 18px;
-        background:#dcfce7;
-        color:#166534;
-        border-radius:12px;
-        font-weight:600;
-        display:flex;
-        align-items:center;
-        gap:10px;">
-        <i data-lucide="check-circle"></i>
-        {{ session('success') }}
+    @if(session('success'))
+        <div class="mx-8 mt-6 p-4 bg-emerald-50 border border-emerald-100 rounded-2xl flex items-center gap-3 animate-in fade-in slide-in-from-top-4 duration-300">
+            <div class="w-8 h-8 bg-emerald-500 rounded-xl flex items-center justify-center shadow-lg shadow-emerald-200">
+                <i data-lucide="check-circle" class="w-5 h-5 text-white"></i>
+            </div>
+            <p class="text-emerald-700 text-sm font-bold tracking-tight">{{ session('success') }}</p>
+        </div>
+    @endif
+
+    <div class="p-4 md:p-6 font-sans">
+        <table class="w-full text-left border-collapse">
+            <thead class="hidden md:table-header-group">
+                <tr class="bg-slate-50 text-slate-500 text-[11px] font-bold uppercase tracking-wider border-b border-slate-100">
+                    <th class="px-6 py-4 text-center">No</th>
+                    <th class="px-6 py-4">Infromasi Peminjam</th>
+                    <th class="px-6 py-4">Alat & Jumlah</th>
+                    <th class="px-6 py-4 text-center">Periode Pinjam</th>
+                    <th class="px-6 py-4 text-center">Status</th>
+                </tr>
+            </thead>
+            <tbody id="my-loan-table-body" class="block md:table-row-group divide-y-0 md:divide-y divide-slate-100">
+                @include('partials.my_loan_list', ['loans' => $loans])
+            </tbody>    
+        </table>
     </div>
-@endif
-
-<div class="content-card">
-    <table>
-        <thead>
-            <tr>
-                <th style="text-align: center;">No</th>
-                <th style="text-align: center;">Nama Peminjam</th>
-                <th style="text-align: center;">NIM</th>
-                <th style="text-align: center;">Email</th>
-                <th style="text-align: center;">Alat</th>
-                <th style="text-align: center;">Jumlah</th>
-                <th style="text-align: center;">Tgl Pinjam</th>
-                <th style="text-align: center;">Tgl Kembali</th>
-                <th style="text-align: center;">Status</th>
-            </tr>
-        </thead>
-
-        <tbody id="my-loan-table-body">
-            @include('partials.my_loan_list', ['loans' => $loans])
-        </tbody>    
-    </table>
 </div>
 
 <script>
@@ -113,9 +110,5 @@ document.addEventListener('DOMContentLoaded', function() {
         statusSelect.addEventListener('change', performMyLoanFilter);
     }
 });
-</script>
-
-<script>
-    lucide.createIcons();
 </script>
 @endsection

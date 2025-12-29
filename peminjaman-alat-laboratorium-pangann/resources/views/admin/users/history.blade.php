@@ -1,16 +1,16 @@
 @extends('layouts.app')
 
-@section('title', 'Persetujuan Akun')
+@section('title', 'Riwayat Registrasi')
 
 @section('content')
 <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
     <!-- Header Bar -->
     <div class="p-4 md:p-6 border-b border-slate-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-slate-50/50">
         <div>
-            <h2 class="text-xl font-bold text-slate-800">Persetujuan Akun</h2>
-            <p class="text-xs text-slate-500 font-medium">Pengguna baru yang menunggu akses</p>
+            <h2 class="text-xl font-bold text-slate-800">Riwayat Registrasi</h2>
+            <p class="text-xs text-slate-500 font-medium">Akun yang telah disetujui atau ditolak</p>
         </div>
-        
+
         <div class="flex flex-wrap lg:flex-nowrap items-center gap-3 w-full lg:w-auto">
             <!-- Search -->
             <div class="relative flex-1 md:w-80">
@@ -20,17 +20,18 @@
                     <i data-lucide="search" class="w-4 h-4"></i>
                 </div>
             </div>
-        </div>
-    </div>
-
-    <!-- Alert Messages -->
-    @if(session('success'))
-        <div class="px-6 py-4 border-b border-slate-100">
-            <div class="flex items-center gap-2 p-3 bg-emerald-50 text-emerald-700 rounded-xl text-sm font-semibold border border-emerald-100">
-                <i data-lucide="check-circle" class="w-4 h-4"></i> {{ session('success') }}
+            
+            <!-- Status Filter (dropdown) -->
+            <div class="ml-4">
+                <label for="filter-status" class="sr-only">Filter Status</label>
+                <select id="filter-status" class="px-3 py-2 bg-white border border-slate-200 rounded-xl text-sm font-medium">
+                    <option value="history">Semua</option>
+                    <option value="active">Active</option>
+                    <option value="rejected">Rejected</option>
+                </select>
             </div>
         </div>
-    @endif
+    </div>
 
     <!-- Table -->
     <div class="p-4 md:p-6">
@@ -42,46 +43,51 @@
                     <th class="px-4 py-3">Email</th>
                     <th class="px-4 py-3">Tanggal Daftar</th>
                     <th class="px-4 py-3 text-center">Status</th>
-                    <th class="px-4 py-3 text-center">Aksi</th>
                 </tr>
             </thead>
             <tbody id="user-table-body" class="block md:table-row-group divide-y-0 md:divide-y divide-slate-100">
-                @include('partials.user_list', ['users' => $users])
+                @include('partials.user_list_history', ['users' => $users])
             </tbody>
         </table>
     </div>
 </div>
 
 <script>
-/**
- * Logika Live Search untuk pencarian user pending
- * Mengambil data dari server tanpa refresh halaman
- */
 document.addEventListener('DOMContentLoaded', function() {
     const searchInput = document.getElementById('user-live-search');
     const tableBody = document.getElementById('user-table-body');
+    const csrfToken = '{{ csrf_token() }}';
+    let searchTimer = null;
+
+    // currentStatus: 'history' (all history), 'active' or 'rejected'
+    let currentStatus = 'history';
+
+    function doSearch(query) {
+        fetch(`{{ route('filter.users') }}?query=${encodeURIComponent(query)}&status=${currentStatus}&context=history`, {
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        })
+        .then(response => response.text())
+        .then(html => {
+            tableBody.innerHTML = html;
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        })
+        .catch(error => console.error('Error fetching search results:', error));
+    }
 
     if (searchInput) {
         searchInput.addEventListener('keyup', function() {
+            clearTimeout(searchTimer);
             const query = this.value;
+            searchTimer = setTimeout(() => doSearch(query), 300);
+        });
+    }
 
-            // Memanggil route filter.users via AJAX
-            fetch(`{{ route('filter.users') }}?query=${query}`, {
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest'
-                }
-            })
-            .then(response => response.text())
-            .then(html => {
-                // Mengupdate isi tabel dengan hasil pencarian
-                tableBody.innerHTML = html;
-                
-                // Me-render ulang icon Lucide setelah konten berubah
-                if (typeof lucide !== 'undefined') {
-                    lucide.createIcons();
-                }
-            })
-            .catch(error => console.error('Error fetching search results:', error));
+    // Dropdown filter
+    const selectStatus = document.getElementById('filter-status');
+    if (selectStatus) {
+        selectStatus.addEventListener('change', function() {
+            currentStatus = this.value;
+            doSearch(searchInput.value);
         });
     }
 });

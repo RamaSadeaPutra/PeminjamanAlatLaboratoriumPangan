@@ -3,70 +3,96 @@
 @section('title', 'Data Alat')
 
 @section('content')
-<div class="p-8">
-    <div class="flex justify-between items-center mb-8">
-        <div>
-            <h1 class="text-2xl font-bold text-slate-800">Daftar Alat Laboratorium</h1>
-            <p class="text-sm text-slate-500">Manajemen stok dan kondisi inventaris alat</p>
+<div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+    <!-- Header & Filter Bar -->
+    <div class="p-4 md:p-6 border-b border-slate-100 bg-slate-50/50 space-y-4">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div>
+                <h2 class="text-xl font-bold text-slate-800">Daftar Alat Laboratorium</h2>
+                <p class="text-xs text-slate-500 font-medium">Manajemen stok dan kondisi inventaris</p>
+            </div>
+            <a href="{{ route('tools.create') }}" 
+               class="flex items-center gap-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold rounded-xl shadow-sm shadow-blue-200 transition-all active:scale-95 whitespace-nowrap">
+                <i data-lucide="plus" class="w-4 h-4"></i>
+                Tambah Alat Baru
+            </a>
         </div>
-        <div class="flex items-center gap-3 flex-wrap">
+
+        <div class="flex flex-wrap lg:flex-nowrap items-center gap-3">
             <!-- Filter Lab -->
-            <select id="filter-lab-admin" class="px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <option value="">Semua Lab</option>
-                @foreach($labs as $lab)
-                    <option value="{{ $lab->id }}">{{ $lab->lab_name }}</option>
-                @endforeach
-            </select>
-
-            <!-- Filter Kategori -->
-            <select id="filter-category-admin" class="px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <option value="">Semua Kategori</option>
-                @foreach($categories as $category)
-                    <option value="{{ $category->id }}">{{ $category->category_name }}</option>
-                @endforeach
-            </select>
-
-            <!-- Filter Kondisi -->
-            <select id="filter-condition-admin" class="px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <option value="">Semua Kondisi</option>
-                <option value="baik">Baik</option>
-                <option value="rusak">Rusak</option>
-            </select>
-
-            <!-- Form Pencarian Admin -->
-            <div class="flex items-center">
-                <input type="text" id="admin-live-search" name="query" placeholder="Cari alat..." 
-                       class="px-4 py-2 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+            <div class="relative flex-1 min-w-[140px]">
+                <select id="filter-lab-admin" class="w-full pl-4 pr-10 py-2 bg-white border border-slate-200 rounded-xl text-sm focus:ring-4 focus:ring-blue-100 focus:border-blue-500 outline-none transition-all appearance-none cursor-pointer">
+                    <option value="">Semua Lab</option>
+                    @foreach($labs as $lab)
+                        <option value="{{ $lab->id }}">{{ $lab->lab_name }}</option>
+                    @endforeach
+                </select>
+                <div class="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">
+                    <i data-lucide="chevron-down" class="w-4 h-4"></i>
+                </div>
             </div>
 
-            <a href="{{ route('tools.create') }}" class="btn-primary">
-                <i data-lucide="plus" class="w-5 h-5"></i> Tambah Alat Baru
-            </a>
+            <!-- Filter Kategori -->
+            <div class="relative flex-1 min-w-[140px]">
+                <select id="filter-category-admin" class="w-full pl-4 pr-10 py-2 bg-white border border-slate-200 rounded-xl text-sm focus:ring-4 focus:ring-blue-100 focus:border-blue-500 outline-none transition-all appearance-none cursor-pointer">
+                    <option value="">Semua Kategori</option>
+                    @foreach($categories as $category)
+                        <option value="{{ $category->id }}">{{ $category->category_name }}</option>
+                    @endforeach
+                </select>
+                <div class="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">
+                    <i data-lucide="chevron-down" class="w-4 h-4"></i>
+                </div>
+            </div>
+
+            <!-- Filter Kondisi -->
+            <div class="relative flex-1 min-w-[130px]">
+                <select id="filter-condition-admin" class="w-full pl-4 pr-10 py-2 bg-white border border-slate-200 rounded-xl text-sm focus:ring-4 focus:ring-blue-100 focus:border-blue-500 outline-none transition-all appearance-none cursor-pointer">
+                    <option value="">Semua Kondisi</option>
+                    <option value="baik">Baik</option>
+                    <option value="rusak">Rusak</option>
+                </select>
+                <div class="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">
+                    <i data-lucide="chevron-down" class="w-4 h-4"></i>
+                </div>
+            </div>
+
+            <!-- Search -->
+            <div class="relative flex-1 md:flex-none md:w-80">
+                <input type="text" id="admin-live-search" placeholder="Cari alat..." 
+                       class="w-full pl-10 pr-4 py-2 bg-white border border-slate-200 rounded-xl text-sm focus:ring-4 focus:ring-blue-100 focus:border-blue-500 outline-none transition-all">
+                <div class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400">
+                    <i data-lucide="search" class="w-4 h-4"></i>
+                </div>
+            </div>
         </div>
     </div>
 
+    <!-- Alert Messages -->
     @if(session('success'))
-        <div class="mb-6 p-4 bg-green-50 border border-green-200 text-green-600 rounded-xl flex items-center gap-3 text-sm font-bold">
-            <i data-lucide="check-circle" class="w-5 h-5"></i>
-            {{ session('success') }}
+        <div class="px-6 py-4 border-b border-slate-100">
+            <div class="flex items-center gap-2 p-3 bg-emerald-50 text-emerald-700 rounded-xl text-sm font-semibold border border-emerald-100">
+                <i data-lucide="check-circle" class="w-4 h-4"></i> {{ session('success') }}
+            </div>
         </div>
     @endif
 
-    <div class="content-card bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+    <!-- Table -->
+    <div class="p-4 md:p-6">
         <table class="w-full text-left border-collapse">
-            <thead>
-                <tr class="bg-slate-50 border-b border-slate-100">
-                    <th class="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-widest">No</th>
-                    <th class="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-widest">Gambar</th>
-                    <th class="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-widest">Nama Alat</th>
-                    <th class="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-widest">Lab</th>
-                    <th class="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-widest">Kategori</th>
-                    <th class="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-widest ">Stok</th>
-                    <th class="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-widest">Kondisi</th>
-                    <th class="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-widest text-center">Aksi</th>
+            <thead class="hidden md:table-header-group">
+                <tr class="bg-slate-50 text-slate-500 text-[10px] md:text-[11px] font-bold uppercase tracking-wider border-b border-slate-100">
+                    <th class="px-4 py-3 w-12 text-center text-[10px]">No</th>
+                    <th class="px-4 py-3 w-24 text-[10px]">Gambar</th>
+                    <th class="px-4 py-3 text-[10px]">Nama Alat</th>
+                    <th class="px-4 py-3 text-[10px]">Lab</th>
+                    <th class="px-4 py-3 text-[10px]">Kategori</th>
+                    <th class="px-4 py-3 text-center text-[10px]">Stok</th>
+                    <th class="px-4 py-3 text-center text-[10px]">Kondisi</th>
+                    <th class="px-4 py-3 text-center text-[10px]">Aksi</th>
                 </tr>
             </thead>
-            <tbody id="admin-tool-table-body" class="divide-y divide-slate-50">
+            <tbody id="admin-tool-table-body" class="block md:table-row-group divide-y-0 md:divide-y divide-slate-100">
                 @include('partials.tool_list', ['tools' => $tools])
             </tbody>
         </table>

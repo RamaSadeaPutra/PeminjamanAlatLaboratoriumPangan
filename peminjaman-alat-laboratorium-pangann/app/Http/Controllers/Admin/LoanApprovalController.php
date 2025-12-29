@@ -48,8 +48,11 @@ class LoanApprovalController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
-        // Load view khusus untuk format PDF
-        $pdf = Pdf::loadView('admin.loans.report_pdf', compact('loans'));
+        // Load view khusus untuk format PDF dengan konfigurasi
+        $pdf = Pdf::loadView('admin.loans.report_pdf', compact('loans'))
+            ->setPaper('a4', 'landscape')
+            ->setOption('isHtml5ParserEnabled', true)
+            ->setOption('isRemoteEnabled', true);
         
         // Download file PDF
         return $pdf->download('riwayat-peminjaman-' . date('Y-m-d') . '.pdf');

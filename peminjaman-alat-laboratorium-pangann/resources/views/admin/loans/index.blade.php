@@ -4,62 +4,72 @@
 @section('main_class', 'p-4')
 
 @section('content')
-<div>
-
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 16px;">
-        <!-- Header removed -->
-
-        <div style="display: flex; gap: 10px; align-items: center;">
-            <!-- Input Live Search Loan -->
-            <div style="position: relative;">
+<div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+    <!-- Filters Bar -->
+    <div class="p-4 md:p-6 border-b border-slate-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-slate-50/50">
+        <h2 class="text-xl font-bold text-slate-800">Daftar Pengajuan</h2>
+        
+        <div class="flex flex-wrap lg:flex-nowrap items-center gap-3 w-full lg:w-auto">
+            <!-- Search -->
+            <div class="relative flex-1 md:flex-none md:w-80">
                 <input type="text" id="loan-live-search" placeholder="Cari user atau alat..." 
-                       style="padding: 8px 12px; padding-left: 35px; border: 1px solid #e2e8f0; border-radius: 8px; outline: none; font-size: 14px; width: 220px;">
-                <div style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: #94a3b8;">
-                    <i data-lucide="search" style="width: 16px; height: 16px;"></i>
+                       class="w-full pl-10 pr-4 py-2 bg-white border border-slate-200 rounded-xl text-sm focus:ring-4 focus:ring-blue-100 focus:border-blue-500 outline-none transition-all">
+                <div class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400">
+                    <i data-lucide="search" class="w-4 h-4"></i>
                 </div>
             </div>
 
             <!-- Filter Status -->
-            <select id="filter-status-loan" style="padding: 8px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; outline: none; background: white;">
-                <option value="">Semua Status</option>
-                <option value="menunggu">Menunggu</option>
-                <option value="disetujui">Disetujui</option>
-                <option value="dipinjam">Dipinjam</option>
-            </select>
+            <div class="relative w-full md:w-44">
+                <select id="filter-status-loan" 
+                        class="w-full pl-4 pr-10 py-2 bg-white border border-slate-200 rounded-xl text-sm focus:ring-4 focus:ring-blue-100 focus:border-blue-500 outline-none transition-all appearance-none cursor-pointer">
+                    <option value="">Semua Status</option>
+                    <option value="menunggu">Menunggu</option>
+                    <option value="disetujui">Disetujui</option>
+                    <option value="dipinjam">Dipinjam</option>
+                </select>
+                <div class="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">
+                    <i data-lucide="chevron-down" class="w-4 h-4"></i>
+                </div>
+            </div>
         </div>
     </div>
 
-    @if(session('success'))
-        <div style="color:green; margin-bottom:10px;">
-            {{ session('success') }}
+    <!-- Alert Messages -->
+    @if(session('success') || session('error'))
+        <div class="px-6 py-4 border-b border-slate-100">
+            @if(session('success'))
+                <div class="flex items-center gap-2 p-3 bg-emerald-50 text-emerald-700 rounded-xl text-sm font-semibold border border-emerald-100">
+                    <i data-lucide="check-circle" class="w-4 h-4"></i> {{ session('success') }}
+                </div>
+            @endif
+            @if(session('error'))
+                <div class="flex items-center gap-2 p-3 bg-red-50 text-red-700 rounded-xl text-sm font-semibold border border-red-100">
+                    <i data-lucide="alert-circle" class="w-4 h-4"></i> {{ session('error') }}
+                </div>
+            @endif
         </div>
     @endif
 
-    @if(session('error'))
-        <div style="color:red; margin-bottom:10px;">
-            {{ session('error') }}
-        </div>
-    @endif
-
-    <table width="100%" cellpadding="12" style="border-collapse: collapse;">
-        <thead style="background:#f1f5f9;">
-            <tr>
-                <th style="text-align: center;">User</th>
-                <th style="text-align: center;">NIM</th>
-                <th style="text-align: center;">Email</th>
-                <th style="text-align: center;">Alat</th>
-                <th style="text-align: center;">Jumlah</th>
-                <th style="text-align: center;">Tgl Pinjam</th>
-                <th style="text-align: center;">Tgl Kembali</th>
-                <th style="text-align: center;">Status</th>
-                <th style="text-align: center;">Aksi</th>
-            </tr>
-        </thead>
-        <tbody id="loan-table-body">
-            @include('partials.loan_list', ['loans' => $loans])
-        </tbody>
-    </table>
-
+    <!-- Table -->
+    <div class="p-4 md:p-6">
+        <table class="w-full text-left border-collapse">
+            <thead class="hidden md:table-header-group">
+                <tr class="bg-slate-50 text-slate-500 text-[11px] font-bold uppercase tracking-wider border-b border-slate-100">
+                    <th class="px-4 py-3">Nama</th>
+                    <th class="px-4 py-3">NIM</th>
+                    <th class="px-4 py-3">Email</th>
+                    <th class="px-4 py-3 text-center">Alat & Jumlah</th>
+                    <th class="px-4 py-3 text-center">Periode Sewa</th>
+                    <th class="px-4 py-3 text-center">Status</th>
+                    <th class="px-4 py-3 text-center">Aksi</th>
+                </tr>
+            </thead>
+            <tbody id="loan-table-body" class="block md:table-row-group divide-y-0 md:divide-y divide-slate-100">
+                @include('partials.loan_list', ['loans' => $loans])
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <script>

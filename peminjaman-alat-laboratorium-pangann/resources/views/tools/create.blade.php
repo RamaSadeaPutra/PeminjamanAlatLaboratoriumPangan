@@ -3,178 +3,108 @@
 @section('title', 'Tambah Alat')
 
 @section('content')
-<div style="max-width: 900px; margin:auto; padding: 32px 16px;">
-
-    {{-- HEADER --}}
-    <div style="margin-bottom: 24px;">
-        <h2 style="font-size: 22px; font-weight: 700; margin:0;">
-            Tambah Alat Laboratorium
-        </h2>
-        <p style="font-size:14px; color:#64748b; margin-top:6px;">
-            Masukkan data alat dengan lengkap
-        </p>
+<div class="max-w-4xl mx-auto py-4 md:py-8 px-4">
+    <!-- Header -->
+    <div class="mb-8">
+        <h2 class="text-2xl font-bold text-slate-800">Tambah Alat Laboratorium</h2>
+        <p class="text-sm text-slate-500 mt-1 font-medium">Masukkan data alat dengan lengkap untuk inventaris baru</p>
     </div>
 
-    {{-- CARD --}}
-    <div class="card" style="
-        padding: 28px;
-        border-radius: 14px;
-        background: #fff;
-        box-shadow: 0 10px 25px rgba(0,0,0,.06);
-    ">
-
-        <form action="{{ route('tools.store') }}" method="POST" enctype="multipart/form-data">
+    <!-- Card Form -->
+    <div class="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
+        <form action="{{ route('tools.store') }}" method="POST" enctype="multipart/form-data" class="p-5 md:p-8">
             @csrf
 
-            <div style="
-                display:grid;
-                grid-template-columns: repeat(2, 1fr);
-                gap: 20px;
-            ">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Nama Alat -->
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-bold text-slate-700 mb-2">Nama Alat</label>
+                    <input type="text" name="tool_name" required
+                           class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-slate-700 focus:ring-4 focus:ring-blue-100 focus:border-blue-500 outline-none transition-all placeholder:text-slate-400"
+                           placeholder="Misal: Mikroskop Binokuler">
+                </div>
 
-                {{-- Nama Alat --}}
+                <!-- Laboratorium -->
                 <div>
-                    <label class="form-label">Nama Alat</label>
-                    <input type="text" name="tool_name" class="form-input" required>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">Laboratorium</label>
+                    <div class="relative">
+                        <select name="lab_id" 
+                                class="w-full pl-4 pr-10 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-slate-700 focus:ring-4 focus:ring-blue-100 focus:border-blue-500 outline-none transition-all appearance-none cursor-pointer">
+                            @foreach($labs as $lab)
+                                <option value="{{ $lab->id }}">{{ $lab->lab_name }}</option>
+                            @endforeach
+                        </select>
+                        <i data-lucide="chevron-down" class="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none"></i>
+                    </div>
                 </div>
 
-                {{-- Laboratorium --}}
+                <!-- Kategori -->
                 <div>
-                    <label class="form-label">Laboratorium</label>
-                    <select name="lab_id" class="form-input">
-                        @foreach($labs as $lab)
-                            <option value="{{ $lab->id }}">{{ $lab->lab_name }}</option>
-                        @endforeach
-                    </select>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">Kategori</label>
+                    <div class="relative">
+                        <select name="tool_category_id" 
+                                class="w-full pl-4 pr-10 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-slate-700 focus:ring-4 focus:ring-blue-100 focus:border-blue-500 outline-none transition-all appearance-none cursor-pointer">
+                            @foreach($categories as $category)
+                                <option value="{{ $category->id }}">{{ $category->category_name }}</option>
+                            @endforeach
+                        </select>
+                        <i data-lucide="chevron-down" class="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none"></i>
+                    </div>
                 </div>
 
-                {{-- Kategori --}}
+                <!-- Kondisi -->
                 <div>
-                    <label class="form-label">Kategori</label>
-                    <select name="tool_category_id" class="form-input">
-                        @foreach($categories as $category)
-                            <option value="{{ $category->id }}">{{ $category->category_name }}</option>
-                        @endforeach
-                    </select>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">Kondisi</label>
+                    <div class="relative">
+                        <select name="condition" 
+                                class="w-full pl-4 pr-10 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-slate-700 focus:ring-4 focus:ring-blue-100 focus:border-blue-500 outline-none transition-all appearance-none cursor-pointer">
+                            <option value="baik">Baik</option>
+                            <option value="rusak">Rusak</option>
+                        </select>
+                        <i data-lucide="chevron-down" class="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none"></i>
+                    </div>
                 </div>
 
-                {{-- Kondisi --}}
+                <!-- Stok -->
                 <div>
-                    <label class="form-label">Kondisi</label>
-                    <select name="condition" class="form-input">
-                        <option value="baik">Baik</option>
-                        <option value="rusak">Rusak</option>
-                    </select>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">Stok</label>
+                    <input type="number" name="stock" 
+                           class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-slate-700 focus:ring-4 focus:ring-blue-100 focus:border-blue-500 outline-none transition-all"
+                           placeholder="0">
                 </div>
 
-                {{-- Stok --}}
-                <div>
-                    <label class="form-label">Stok</label>
-                    <input type="number" name="stock" class="form-input">
+                <!-- Deskripsi -->
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-bold text-slate-700 mb-2">Deskripsi</label>
+                    <textarea name="description" rows="4" 
+                              class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-slate-700 focus:ring-4 focus:ring-blue-100 focus:border-blue-500 outline-none transition-all placeholder:text-slate-400"
+                              placeholder="Keterangan tambahan mengenai alat..."></textarea>
                 </div>
 
-                {{-- Deskripsi --}}
-                <div style="grid-column: span 2;">
-                    <label class="form-label">Deskripsi</label>
-                    <textarea name="description" class="form-input" rows="4"></textarea>
+                <!-- Gambar -->
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-bold text-slate-700 mb-2">Gambar Alat</label>
+                    <div class="group relative flex flex-col items-center justify-center w-full px-6 py-10 border-2 border-dashed border-slate-200 rounded-3xl bg-slate-50 hover:bg-slate-100/50 hover:border-blue-300 transition-all cursor-pointer">
+                        <i data-lucide="image" class="w-10 h-10 text-slate-300 group-hover:text-blue-400 transition-colors mb-2"></i>
+                        <p class="text-sm text-slate-400 group-hover:text-slate-500">Klik untuk unggah atau seret gambar ke sini</p>
+                        <input type="file" name="image" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+                    </div>
                 </div>
-
-                <div class="mb-4">
-    <label class="block text-sm font-medium text-gray-700">
-        Gambar Alat
-    </label>
-    <input 
-        type="file" 
-        name="image" 
-        class="mt-1 block w-full text-sm text-gray-500
-               file:mr-4 file:py-2 file:px-4
-               file:rounded-md file:border-0
-               file:text-sm file:font-semibold
-               file:bg-blue-50 file:text-blue-700
-               hover:file:bg-blue-100">
-</div>
-
-
             </div>
 
-            {{-- ACTION --}}
-          <div style="
-    margin-top: 28px;
-    display:flex;
-    justify-content:flex-end;
-    gap:14px;
-    border-top:1px solid #e5e7eb;
-    padding-top:22px;
-">
-
-    {{-- BATAL --}}
-    <a href="{{ route('tools.index') }}"
-       style="
-            display:inline-flex;
-            align-items:center;
-            gap:8px;
-            padding:10px 20px;
-            border-radius:12px;
-            background:#f1f5f9;
-            color:#475569;
-            font-weight:600;
-            text-decoration:none;
-            transition:.2s;
-       "
-       onmouseover="this.style.background='#e2e8f0'"
-       onmouseout="this.style.background='#f1f5f9'">
-        <i data-lucide="arrow-left" style="width:16px;"></i>
-        Batal
-    </a>
-
-    {{-- SIMPAN --}}
-    <button type="submit"
-        style="
-            display:inline-flex;
-            align-items:center;
-            gap:8px;
-            padding:10px 22px;
-            border-radius:12px;
-            background:var(--primary-blue);
-            color:white;
-            font-weight:600;
-            border:none;
-            cursor:pointer;
-            box-shadow:0 6px 18px rgba(37,99,235,.35);
-            transition:.2s;
-        "
-        onmouseover="this.style.opacity='0.9'"
-        onmouseout="this.style.opacity='1'">
-        <i data-lucide="save" style="width:16px;"></i>
-        Simpan Data
-    </button>
-
-</div>
+            <!-- Action Buttons -->
+            <div class="mt-10 pt-8 border-t border-slate-100 flex items-center justify-end gap-3">
+                <a href="{{ route('tools.index') }}" 
+                   class="px-6 py-3 bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold rounded-2xl transition-all active:scale-95">
+                    Batal
+                </a>
+                <button type="submit" 
+                        class="flex items-center gap-2 px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-2xl shadow-lg shadow-blue-200 transition-all active:scale-95">
+                    <i data-lucide="save" class="w-4 h-4"></i>
+                    Simpan Data Alat
+                </button>
+            </div>
         </form>
     </div>
 </div>
-
-<style>
-    .form-label{
-        display:block;
-        font-size:14px;
-        font-weight:600;
-        margin-bottom:6px;
-        color:#334155;
-    }
-
-    .form-input{
-        width:100%;
-        padding:10px 12px;
-        border-radius:10px;
-        border:1px solid #e2e8f0;
-        font-size:14px;
-    }
-
-    .form-input:focus{
-        outline:none;
-        border-color: var(--primary-blue);
-        box-shadow:0 0 0 3px rgba(37,99,235,.15);
-    }
-</style>
 @endsection

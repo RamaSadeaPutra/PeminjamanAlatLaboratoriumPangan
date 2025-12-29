@@ -6,6 +6,7 @@ use App\Models\Tool;
 use App\Models\User;
 use App\Models\Loan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class FilterController extends Controller
 {
@@ -61,19 +62,53 @@ class FilterController extends Controller
      */
     public function filterUsers(Request $request)
     {
-        $query = $request->input('query');
+        $query = trim((string) $request->input('query', ''));
+        $status = $request->input('status');
 
-        $users = User::where('status', 'pending')
+        $users = User::when($status, function($q) use ($status) {
+                if ($status === 'history') {
+                    $q->whereIn('status', ['active', 'rejected']);
+                } else {
+                    $q->where('status', $status);
+                }
+            }, function($q) {
+                $q->where('status', 'pending');
+            })
+            ->where('role', 'user')
             ->when($query, function($q) use ($query) {
-                $q->where(function($sub) use ($query) {
-                    $sub->where('name', 'LIKE', "%{$query}%")
-                        ->orWhere('email', 'LIKE', "%{$query}%")
+                $lower = strtolower($query);
+                $q->where(function($sub) use ($query, $lower) {
+                    $sub->whereRaw('LOWER(name) LIKE ?', ["%{$lower}%"])
+                        ->orWhereRaw('LOWER(email) LIKE ?', ["%{$lower}%"])
                         ->orWhere('nim', 'LIKE', "%{$query}%");
                 });
             })
             ->get();
 
+        // Log for debugging search issues
+        try {
+            Log::info('filterUsers', ['status' => $status, 'query' => $query, 'count' => $users->count()]);
+        } catch (\Exception $e) {
+            // ignore logging failures
+        }
+
         if ($request->ajax()) {
+            $context = $request->input('context');
+
+            // If the caller is the history page, always return the history partial
+            if ($context === 'history') {
+                return view('partials.user_list_history', compact('users'))->render();
+            }
+
+            // Otherwise return appropriate partial depending on status
+            if ($status === 'active') {
+                return view('partials.user_list_active', compact('users'))->render();
+            }
+
+            if ($status === 'history' || $status === 'rejected') {
+                return view('partials.user_list_history', compact('users'))->render();
+            }
+
             return view('partials.user_list', compact('users'))->render();
         }
 
