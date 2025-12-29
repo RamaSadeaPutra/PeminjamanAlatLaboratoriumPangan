@@ -1,0 +1,71 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Loan;
+use App\Models\Tool;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
+class LoanController extends Controller
+{
+    // =========================
+    // USER - DAFTAR PEMINJAMAN
+    // =========================
+    public function index()
+    {
+        $loans = Loan::with('tool')
+            ->where('user_id', Auth::id())
+            ->whereIn('status', ['menunggu', 'disetujui', 'dipinjam'])
+            ->latest()
+            ->get();
+
+        return view('loans.index', compact('loans'));
+    }
+
+    public function history()
+    {
+        $loans = Loan::with('tool')
+            ->where('user_id', Auth::id())
+            ->whereIn('status', ['kembali', 'ditolak'])
+            ->latest()
+            ->get();
+
+        return view('loans.history', compact('loans'));
+    }
+
+    // =========================
+    // USER - FORM PINJAM
+    // =========================
+    public function create(Tool $tool)
+    {
+        $tools = Tool::all();
+        return view('loans.create', compact('tool', 'tools'));
+    }
+
+    // =========================
+    // USER - SIMPAN PENGAJUAN
+    // =========================
+    public function store(Request $request)
+    {
+        $request->validate([
+            'tool_id' => 'required|exists:tools,id',
+            'jumlah' => 'required|integer|min:1',
+            'tanggal_pinjam' => 'required|date',
+            'tanggal_kembali' => 'required|date|after_or_equal:tanggal_pinjam',
+        ]);
+
+        Loan::create([
+            'user_id' => Auth::id(),
+            'tool_id' => $request->tool_id,
+            'jumlah' => $request->jumlah,
+            'tanggal_pinjam' => $request->tanggal_pinjam,
+            'tanggal_kembali' => $request->tanggal_kembali,
+            'status' => 'menunggu',
+        ]);
+
+        return redirect()
+            ->route('user.loans.index')
+            ->with('success', 'Pengajuan peminjaman berhasil dikirim');
+    }
+}

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ToolController;
+<<<<<<< HEAD
 use App\Http\Controllers\LoanController;
 use App\Http\Controllers\Admin\DashboardController;
 
@@ -79,14 +80,15 @@ Route::get('/admin/dashboard', [DashboardController::class, 'index'])
     ->name('admin.dashboard');
 
 
+=======
+>>>>>>> 5c04987471bd470b2d420b3339915ec64f8d28f2
 
-Route::get('/loans/create', [LoanController::class, 'create'])->name('loans.create');
-Route::post('/loans', [LoanController::class, 'store'])->name('loans.store');
 
     Route::get('/loans/create/{tool}', [LoanController::class, 'create'])
         ->name('loans.create');
 
 
+<<<<<<< HEAD
     Route::post('/loans', [LoanController::class, 'store'])
         ->name('loans.store');
 });
@@ -97,12 +99,24 @@ Route::post('/loans', [LoanController::class, 'store'])->name('loans.store');
 |--------------------------------------------------------------------------
 */
 Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
+=======
+Route::get('/tools', [ToolController::class, 'index'])->name('tools.index');
+Route::get('/tools/create', [ToolController::class, 'create'])->name('tools.create');
+Route::post('/tools', [ToolController::class, 'store'])->name('tools.store');
+>>>>>>> 5c04987471bd470b2d420b3339915ec64f8d28f2
 
     Route::get('/dashboard', [DashboardController::class, 'index'])
         ->name('admin.dashboard');
 
+<<<<<<< HEAD
     // kelola alat
     Route::resource('tools', ToolController::class);
+=======
+Route::get('/loans/create', [LoanController::class, 'create'])->name('loans.create');
+Route::post('/loans', [LoanController::class, 'store'])->name('loans.store');
+
+Route::get('/loans', [LoanController::class, 'index'])->name('loans.index');
+>>>>>>> 5c04987471bd470b2d420b3339915ec64f8d28f2
 
     // pengajuan peminjaman
     Route::get('/loans', [LoanApprovalController::class, 'index'])

@@ -17,4 +17,8 @@ class DashboardController extends Controller
             'totalUsers' => User::count(),
         ]);
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 5c04987471bd470b2d420b3339915ec64f8d28f2
