@@ -1,24 +1,15 @@
 @extends('layouts.app')
 
-@section('title', 'Persetujuan Peminjaman')
+@section('title', 'Pengajuan Peminjaman')
+@section('main_class', 'p-4')
 
 @section('content')
-<div style="max-width: 1100px; margin:auto; padding:32px">
+<div>
 
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 16px;">
-        <h2 style="font-size:22px; font-weight:700; margin: 0;">
-            Pengajuan Peminjaman
-        </h2>
+        <!-- Header removed -->
 
         <div style="display: flex; gap: 10px; align-items: center;">
-            <!-- Filter Status -->
-            <select id="filter-status-loan" style="padding: 8px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; outline: none; background: white;">
-                <option value="">Semua Status</option>
-                <option value="menunggu">Menunggu</option>
-                <option value="disetujui">Disetujui</option>
-                <option value="dipinjam">Dipinjam</option>
-            </select>
-
             <!-- Input Live Search Loan -->
             <div style="position: relative;">
                 <input type="text" id="loan-live-search" placeholder="Cari user atau alat..." 
@@ -27,6 +18,14 @@
                     <i data-lucide="search" style="width: 16px; height: 16px;"></i>
                 </div>
             </div>
+
+            <!-- Filter Status -->
+            <select id="filter-status-loan" style="padding: 8px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; outline: none; background: white;">
+                <option value="">Semua Status</option>
+                <option value="menunggu">Menunggu</option>
+                <option value="disetujui">Disetujui</option>
+                <option value="dipinjam">Dipinjam</option>
+            </select>
         </div>
     </div>
 

@@ -24,19 +24,21 @@
     </td>
     <td style="text-align: center;">
         @if($loan->status === 'menunggu')
-            <form action="{{ route('admin.loans.approve', $loan->id) }}" method="POST" style="display:inline">
-                @csrf
-                <button style="background:#22c55e;color:white;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;">
-                    ACC
-                </button>
-            </form>
+            <div style="display: flex; gap: 8px; justify-content: center;">
+                <form action="{{ route('admin.loans.approve', $loan->id) }}" method="POST">
+                    @csrf
+                    <button style="background:#22c55e;color:white;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;">
+                        ACC
+                    </button>
+                </form>
 
-            <form action="{{ route('admin.loans.reject', $loan->id) }}" method="POST" style="display:inline">
-                @csrf
-                <button style="background:#ef4444;color:white;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;">
-                    Tolak
-                </button>
-            </form>
+                <form action="{{ route('admin.loans.reject', $loan->id) }}" method="POST">
+                    @csrf
+                    <button style="background:#ef4444;color:white;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;">
+                        Tolak
+                    </button>
+                </form>
+            </div>
         @elseif($loan->status === 'disetujui')
             <form action="{{ route('admin.loans.borrowed', $loan->id) }}" method="POST" style="display:inline">
                 @csrf

@@ -1,6 +1,15 @@
 @forelse ($tools as $tool)
     <tr>
         <td>{{ $loop->iteration }}</td>
+        <td>
+            @if($tool->image)
+                <img src="{{ asset('storage/' . $tool->image) }}" alt="{{ $tool->tool_name }}" class="w-16 h-16 object-cover rounded-lg border border-slate-200">
+            @else
+                <div class="w-16 h-16 bg-slate-100 rounded-lg flex items-center justify-center text-slate-400 border border-slate-200">
+                    <i data-lucide="image" class="w-8 h-8"></i>
+                </div>
+            @endif
+        </td>
         <td class="font-bold">{{ $tool->tool_name }}</td>
         <td>{{ $tool->lab->name ?? $tool->lab->lab_name ?? '-' }}</td>
         <td>{{ $tool->category->name ?? $tool->category->category_name ?? '-' }}</td>
@@ -37,7 +46,7 @@
     </tr>
 @empty
     <tr>
-        <td colspan="7" style="text-align: center; padding: 40px; color: #64748b;">
+        <td colspan="8" style="text-align: center; padding: 40px; color: #64748b;">
             Tidak ditemukan alat.
         </td>
     </tr>

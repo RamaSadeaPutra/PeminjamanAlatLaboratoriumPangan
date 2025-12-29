@@ -77,7 +77,7 @@ Route::middleware(['auth', 'user'])
 });
 
 // Profile routes
-Route::middleware(['auth', 'user'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
     Route::get('/profile/password', [ProfileController::class, 'editPassword'])->name('profile.editPassword');
     Route::post('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.updatePassword');
