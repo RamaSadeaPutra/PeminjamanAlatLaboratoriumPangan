@@ -148,6 +148,7 @@
         <thead>
             <tr>
                 <th>No</th>
+                <th>Gambar</th>
                 <th>Nama Alat</th>
                 <th>Lab</th>
                 <th>Kategori</th>

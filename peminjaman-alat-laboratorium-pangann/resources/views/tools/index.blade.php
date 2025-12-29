@@ -57,11 +57,12 @@
             <thead>
                 <tr class="bg-slate-50 border-b border-slate-100">
                     <th class="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-widest">No</th>
+                    <th class="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-widest">Gambar</th>
                     <th class="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-widest">Nama Alat</th>
                     <th class="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-widest">Lab</th>
                     <th class="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-widest">Kategori</th>
-                    <th class="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-widest">Kondisi</th>
                     <th class="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-widest ">Stok</th>
+                    <th class="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-widest">Kondisi</th>
                     <th class="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-widest text-center">Aksi</th>
                 </tr>
             </thead>
