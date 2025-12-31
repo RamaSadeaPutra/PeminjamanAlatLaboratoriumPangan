@@ -9,7 +9,7 @@
         @if(auth()->user()->role === 'admin')
         <td class="block md:table-cell px-4 py-3 border-b md:border-0 border-slate-50">
             <div class="flex items-center gap-4">
-                <div class="md:hidden text-[10px] font-black text-slate-400 uppercase tracking-widest min-w-[60px]">Gambar</div>
+                <div class="md:hidden text-[10px] font-black text-slate-400 uppercase tracking-widest min-w-15">Gambar</div>
                 <div class="flex items-center gap-3">
                     @if($tool->image)
                         <div class="w-12 h-12 md:w-14 md:h-14 rounded-xl overflow-hidden border-2 border-white shadow-sm ring-1 ring-slate-100 shrink-0">
@@ -28,7 +28,7 @@
         <!-- Tool Name & ID -->
         <td class="block md:table-cell px-4 py-3 border-b md:border-0 border-slate-50">
             <div class="flex items-center justify-between md:justify-start gap-4">
-                <div class="md:hidden text-[10px] font-black text-slate-400 uppercase tracking-widest min-w-[60px]">Alat</div>
+                <div class="md:hidden text-[10px] font-black text-slate-400 uppercase tracking-widest min-w-15">Alat</div>
                 <div class="text-right md:text-left">
                     <div class="font-bold text-slate-800 text-sm md:text-xs">{{ $tool->tool_name }}</div>
                     <div class="text-[9px] text-slate-400 font-bold uppercase tracking-tight italic">ID: #{{ str_pad($tool->id, 4, '0', STR_PAD_LEFT) }}</div>
@@ -39,7 +39,7 @@
         <!-- Laboratorium -->
         <td class="block md:table-cell px-4 py-3 border-b md:border-0 border-slate-50">
             <div class="flex items-center justify-between md:justify-start gap-4">
-                <div class="md:hidden text-[10px] font-black text-slate-400 uppercase tracking-widest min-w-[60px]">Lab</div>
+                <div class="md:hidden text-[10px] font-black text-slate-400 uppercase tracking-widest min-w-15">Lab</div>
                 <div class="text-slate-600 text-xs font-semibold md:font-medium italic">
                     {{ $tool->lab->name ?? $tool->lab->lab_name ?? '-' }}
                 </div>
@@ -49,7 +49,7 @@
         <!-- Kategori -->
         <td class="block md:table-cell px-4 py-3 border-b md:border-0 border-slate-50">
             <div class="flex items-center justify-between md:justify-start gap-4">
-                <div class="md:hidden text-[10px] font-black text-slate-400 uppercase tracking-widest min-w-[60px]">Kategori</div>
+                <div class="md:hidden text-[10px] font-black text-slate-400 uppercase tracking-widest min-w-15">Kategori</div>
                 <span class="px-2.5 py-1 bg-slate-100 text-slate-600 rounded-lg text-[10px] font-bold uppercase tracking-tight">
                     {{ $tool->category->name ?? $tool->category->category_name ?? '-' }}
                 </span>
@@ -59,7 +59,7 @@
         <!-- Stok -->
         <td class="block md:table-cell px-4 py-3 text-center border-b md:border-0 border-slate-50">
             <div class="flex items-center justify-between md:justify-center gap-4">
-                <div class="md:hidden text-[10px] font-black text-slate-400 uppercase tracking-widest min-w-[60px]">Stok</div>
+                <div class="md:hidden text-[10px] font-black text-slate-400 uppercase tracking-widest min-w-15">Stok</div>
                 <span class="inline-flex items-center px-3 py-1 md:px-2 md:py-0.5 rounded-full md:rounded text-xs font-black {{ $tool->stock > 0 ? 'text-emerald-600 bg-emerald-50' : 'text-red-600 bg-red-50' }}">
                     {{ $tool->stock }}
                 </span>
@@ -70,7 +70,7 @@
         <td class="block md:table-cell px-4 py-3 text-center border-b md:border-0 border-slate-50">
             @php $isGood = in_array(strtolower($tool->condition), ['baik', 'bagus']); @endphp
             <div class="flex items-center justify-between md:justify-center gap-4">
-                <div class="md:hidden text-[10px] font-black text-slate-400 uppercase tracking-widest min-w-[60px]">Kondisi</div>
+                <div class="md:hidden text-[10px] font-black text-slate-400 uppercase tracking-widest min-w-15">Kondisi</div>
                 <span class="inline-flex items-center gap-1.5 py-1.5 px-3 rounded-full text-[10px] font-black uppercase tracking-wider {{ $isGood ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-700' }} ring-2 ring-white">
                     <span class="w-1.5 h-1.5 rounded-full {{ $isGood ? 'bg-emerald-500' : 'bg-red-500' }}"></span>
                     {{ $tool->condition }}
@@ -81,7 +81,7 @@
         <!-- Aksi -->
         <td class="block md:table-cell px-4 py-4 md:py-3">
             <div class="flex items-center justify-between md:justify-center gap-4">
-                <div class="md:hidden text-[10px] font-black text-slate-400 uppercase tracking-widest min-w-[60px]">Opsi</div>
+                <div class="md:hidden text-[10px] font-black text-slate-400 uppercase tracking-widest min-w-15">Opsi</div>
                 <div class="flex-1 md:flex-none">
                     @if(auth()->user()->role === 'admin')
                         <div class="flex items-center justify-end md:justify-center gap-2">

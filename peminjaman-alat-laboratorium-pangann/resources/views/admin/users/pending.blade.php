@@ -1,14 +1,14 @@
 @extends('layouts.app')
 
-@section('title', 'Persetujuan Akun')
+@section('title', 'Pengajuan Registrasi')
 
 @section('content')
 <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
     <!-- Header Bar -->
     <div class="p-4 md:p-6 border-b border-slate-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-slate-50/50">
         <div>
-            <h2 class="text-xl font-bold text-slate-800">Persetujuan Akun</h2>
-            <p class="text-xs text-slate-500 font-medium">Pengguna baru yang menunggu akses</p>
+            <h2 class="text-xl font-bold text-slate-800">Pengajuan Registrasi Akun Laboratorium</h2>
+            <p class="text-xs text-slate-500 font-medium">Manajemen Inventaris Laboratorium</p>
         </div>
         
         <div class="flex flex-wrap lg:flex-nowrap items-center gap-3 w-full lg:w-auto">

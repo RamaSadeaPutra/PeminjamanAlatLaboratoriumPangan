@@ -65,7 +65,7 @@
                         <!-- Nama Alat -->
                         <td class="block md:table-cell px-4 py-3 border-b md:border-0 border-slate-50">
                             <div class="flex items-center justify-between md:justify-start gap-4">
-                                <div class="md:hidden text-[10px] font-black text-slate-400 uppercase tracking-widest min-w-[70px]">Alat</div>
+                                <div class="md:hidden text-[10px] font-black text-slate-400 uppercase tracking-widest min-w-17.5">Alat</div>
                                 <div class="font-bold text-slate-800 text-right md:text-left">{{ $tool->tool_name }}</div>
                             </div>
                         </td>
@@ -73,7 +73,7 @@
                         <!-- Laboratorium -->
                         <td class="block md:table-cell px-4 py-3 border-b md:border-0 border-slate-50">
                             <div class="flex items-center justify-between md:justify-start gap-4">
-                                <div class="md:hidden text-[10px] font-black text-slate-400 uppercase tracking-widest min-w-[70px]">Lab</div>
+                                <div class="md:hidden text-[10px] font-black text-slate-400 uppercase tracking-widest min-w-17.5">Lab</div>
                                 <span class="text-xs font-semibold md:font-medium text-slate-600 italic text-right md:text-left">
                                     {{ $tool->lab->name ?? $tool->lab->lab_name ?? '-' }}
                                 </span>
@@ -83,7 +83,7 @@
                         <!-- Kategori -->
                         <td class="block md:table-cell px-4 py-3 border-b md:border-0 border-slate-50">
                             <div class="flex items-center justify-between md:justify-start gap-4">
-                                <div class="md:hidden text-[10px] font-black text-slate-400 uppercase tracking-widest min-w-[70px]">Kategori</div>
+                                <div class="md:hidden text-[10px] font-black text-slate-400 uppercase tracking-widest min-w-17.5">Kategori</div>
                                 <span class="px-2 py-1 bg-slate-100 text-slate-600 rounded-lg text-[10px] font-bold uppercase text-right md:text-left">
                                     {{ $tool->category->name ?? $tool->category->category_name ?? '-' }}
                                 </span>
@@ -93,7 +93,7 @@
                         <!-- Stok -->
                         <td class="block md:table-cell px-4 py-3 text-center border-b md:border-0 border-slate-50">
                             <div class="flex items-center justify-between md:justify-center gap-4">
-                                <div class="md:hidden text-[10px] font-black text-slate-400 uppercase tracking-widest min-w-[70px]">Stok</div>
+                                <div class="md:hidden text-[10px] font-black text-slate-400 uppercase tracking-widest min-w-17.5">Stok</div>
                                 <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-blue-50 text-blue-600 text-xs font-black">
                                     {{ $tool->stock }}
                                 </span>
@@ -103,7 +103,7 @@
                         <!-- Kondisi -->
                         <td class="block md:table-cell px-4 py-3 text-center border-b md:border-0 border-slate-50">
                             <div class="flex items-center justify-between md:justify-center gap-4">
-                                <div class="md:hidden text-[10px] font-black text-slate-400 uppercase tracking-widest min-w-[70px]">Kondisi</div>
+                                <div class="md:hidden text-[10px] font-black text-slate-400 uppercase tracking-widest min-w-17.5">Kondisi</div>
                                 <div>
                                     @if(in_array(strtolower($tool->condition), ['baik', 'bagus']))
                                         <span class="inline-flex items-center gap-1.5 py-1 px-3 rounded-full text-[10px] font-black bg-emerald-100 text-emerald-700 ring-2 ring-white uppercase">
@@ -123,7 +123,7 @@
                         <!-- Aksi -->
                         <td class="block md:table-cell px-4 py-4 md:py-3">
                             <div class="flex items-center justify-between md:justify-center gap-4">
-                                <div class="md:hidden text-[10px] font-black text-slate-400 uppercase tracking-widest min-w-[70px]">Opsi</div>
+                                <div class="md:hidden text-[10px] font-black text-slate-400 uppercase tracking-widest min-w-17.5">Opsi</div>
                                 <div class="flex items-center justify-end md:justify-center gap-2 flex-1">
                                     @if(auth()->user()->role === 'admin')
                                         <a href="{{ route('tools.edit', $tool->id) }}" 

@@ -9,7 +9,7 @@
         <div class="lg:col-span-4 space-y-4">
             <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-5 flex flex-col items-center relative overflow-hidden">
                 <!-- Background Decorative Gradient -->
-                <div class="absolute top-0 left-0 w-full h-16 bg-gradient-to-br from-blue-500 to-sky-400 opacity-10"></div>
+                <div class="absolute top-0 left-0 w-full h-16 bg-linear-to-br from-blue-500 to-sky-400 opacity-10"></div>
                 
                 <form method="POST" action="{{ route('profile.updatePhoto') }}" enctype="multipart/form-data" class="relative z-10 flex flex-col items-center">
                     @csrf

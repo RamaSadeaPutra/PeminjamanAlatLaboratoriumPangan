@@ -82,14 +82,38 @@
                 </div>
 
                 <!-- Gambar -->
-                <div class="md:col-span-2">
-                    <label class="block text-sm font-bold text-slate-700 mb-2">Gambar Alat</label>
-                    <div class="group relative flex flex-col items-center justify-center w-full px-6 py-10 border-2 border-dashed border-slate-200 rounded-3xl bg-slate-50 hover:bg-slate-100/50 hover:border-blue-300 transition-all cursor-pointer">
-                        <i data-lucide="image" class="w-10 h-10 text-slate-300 group-hover:text-blue-400 transition-colors mb-2"></i>
-                        <p class="text-sm text-slate-400 group-hover:text-slate-500">Klik untuk unggah atau seret gambar ke sini</p>
-                        <input type="file" name="image" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
-                    </div>
-                </div>
+              <div class="md:col-span-2">
+    <label class="block text-sm font-bold text-slate-700 mb-2">Gambar Alat</label>
+
+    <div id="uploadBox"
+         class="group relative flex flex-col items-center justify-center w-full px-6 py-10
+                border-2 border-dashed border-slate-200 rounded-3xl bg-slate-50
+                hover:bg-slate-100/50 hover:border-blue-300 transition-all cursor-pointer">
+
+        <!-- ICON -->
+        <i id="uploadIcon" data-lucide="image"
+           class="w-10 h-10 text-slate-300 group-hover:text-blue-400 transition-colors mb-2"></i>
+
+        <!-- TEXT -->
+        <p id="uploadText" class="text-sm text-slate-400 group-hover:text-slate-500">
+            Klik untuk unggah gambar ke sini
+        </p>
+
+        <!-- PREVIEW -->
+        <img id="previewImage"
+             src=""
+             alt="Preview"
+             class="hidden max-h-60 rounded-2xl object-contain mt-3"/>
+
+        <!-- INPUT -->
+        <input id="imageInput"
+               type="file"
+               name="image"
+               accept="image/*"
+               class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+    </div>
+</div>
+
             </div>
 
             <!-- Action Buttons -->
@@ -107,4 +131,29 @@
         </form>
     </div>
 </div>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const input = document.getElementById('imageInput');
+    const preview = document.getElementById('previewImage');
+    const icon = document.getElementById('uploadIcon');
+    const text = document.getElementById('uploadText');
+
+    input.addEventListener('change', function () {
+        const file = this.files[0];
+        if (!file) return;
+
+        preview.src = URL.createObjectURL(file);
+        preview.classList.remove('hidden');
+
+        icon.classList.add('hidden');
+        text.classList.add('hidden');
+    });
+
+    if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+    }
+});
+</script>
+
+
 @endsection

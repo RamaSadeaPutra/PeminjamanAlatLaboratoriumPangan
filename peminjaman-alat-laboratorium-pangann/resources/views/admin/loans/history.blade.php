@@ -5,38 +5,42 @@
 @section('content')
 <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
     <!-- Filters Bar -->
-    <div class="p-4 md:p-6 border-b border-slate-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-slate-50/50">
-        <h2 class="text-xl font-bold text-slate-800">Riwayat Peminjaman</h2>
-        
-        <div class="flex flex-wrap lg:flex-nowrap items-center gap-3 w-full lg:w-auto">
-            <!-- Filter Status -->
-            <div class="relative w-full md:w-44">
-                <select id="filter-status-history" 
-                        class="w-full pl-4 pr-10 py-2 bg-white border border-slate-200 rounded-xl text-sm focus:ring-4 focus:ring-blue-100 focus:border-blue-500 outline-none transition-all appearance-none cursor-pointer text-slate-700 font-medium">
-                    <option value="">Semua Status</option>
-                    <option value="kembali">Dikembalikan</option>
-                    <option value="ditolak">Ditolak</option>
-                </select>
-                <div class="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">
-                    <i data-lucide="chevron-down" class="w-4 h-4"></i>
-                </div>
+    <div class="p-4 md:p-6 border-b border-slate-100 bg-slate-50/50">
+      <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+            <div>
+                <h2 class="text-xl font-bold text-slate-800">Riwayat Peminjaman Alat Laboratorium</h2>
+                <p class="text-xs text-slate-500 font-medium">Manajemen inventaris Laboratorium</p>
             </div>
 
-            <!-- Search -->
-            <div class="relative flex-1 md:flex-none md:w-80">
-                <input type="text" id="history-live-search" placeholder="Cari user atau alat..." 
-                       class="w-full pl-10 pr-4 py-2 bg-white border border-slate-200 rounded-xl text-sm focus:ring-4 focus:ring-blue-100 focus:border-blue-500 outline-none transition-all">
-                <div class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400">
-                    <i data-lucide="search" class="w-4 h-4"></i>
+            <div class="flex items-center gap-3 md:gap-4 shrink-0">
+                <div class="relative w-64">
+                    <input type="text" id="history-live-search" placeholder="Cari user atau alat..." 
+                           class="w-full pl-10 pr-4 py-2 bg-white border border-slate-200 rounded-xl text-sm focus:ring-4 focus:ring-blue-100 focus:border-blue-500 outline-none transition-all">
+                    <div class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400">
+                        <i data-lucide="search" class="w-4 h-4"></i>
+                    </div>
                 </div>
-            </div>
 
-            <!-- Tombol Export PDF -->
-            <a href="{{ route('admin.loans.report') }}" 
-               class="flex items-center gap-2 px-4 py-2 bg-red-500 hover:bg-red-600 text-white text-sm font-bold rounded-xl shadow-sm shadow-red-200 transition-all active:scale-95">
-                <i data-lucide="file-text" class="w-4 h-4"></i>
-                PDF
-            </a>
+                <div class="relative w-40">
+                    <select id="filter-status-history" 
+                            class="w-full pl-4 pr-10 py-2 bg-white border border-slate-200 rounded-xl text-sm focus:ring-4 focus:ring-blue-100 focus:border-blue-500 outline-none transition-all appearance-none cursor-pointer text-slate-700 font-medium">
+                        <option value="">Semua Status</option>
+                        <option value="kembali">Dikembalikan</option>
+                        <option value="ditolak">Ditolak</option>
+                    </select>
+                    <div class="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">
+                        <i data-lucide="chevron-down" class="w-4 h-4"></i>
+                    </div>
+                </div>
+
+                <form action="{{ route('admin.loans.report') }}" method="GET" class="flex items-center gap-2">
+                  
+                    <button type="submit" class="flex items-center gap-2 px-4 py-2 bg-red-500 hover:bg-red-600 text-white text-sm font-bold rounded-xl shadow-sm shadow-red-200 transition-all active:scale-95">
+                        <i data-lucide="file-text" class="w-4 h-4"></i>
+                        PDF
+                    </button>
+                </form>
+            </div>
         </div>
     </div>
 
@@ -58,6 +62,7 @@
                     <th class="px-4 py-3">Nama</th>
                     <th class="px-4 py-3">NIM</th>
                     <th class="px-4 py-3">Email</th>
+                    <th class="px-4 py-3">Tanggal Pengajuan</th>
                     <th class="px-4 py-3">Alat & Jumlah</th>
                     <th class="px-4 py-3 text-center">Periode Pinjam</th>
                     <th class="px-4 py-3 text-center">Status Akhir</th>

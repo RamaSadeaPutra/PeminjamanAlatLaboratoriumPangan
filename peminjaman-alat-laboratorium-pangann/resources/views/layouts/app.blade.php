@@ -49,7 +49,7 @@
                class="group flex items-center gap-3.5 px-4 py-3 rounded-2xl transition-all duration-300
                {{ request()->routeIs('tools.*') ? 'bg-blue-600 text-white shadow-xl shadow-blue-100 font-bold' : 'text-slate-500 hover:bg-slate-50 hover:text-blue-600' }}">
                 <i data-lucide="microscope" class="w-5 h-5 transition-transform group-hover:scale-110"></i>
-                <span class="text-sm">Inventaris Alat</span>
+                <span class="text-sm">Data Alat Laboratorium</span>
             </a>
 
             <div class="px-4 pt-6 pb-2">
@@ -60,14 +60,14 @@
                class="group flex items-center gap-3.5 px-4 py-3 rounded-2xl transition-all duration-300
                {{ (request()->routeIs('admin.loans.index') || request()->routeIs('admin.loans.approve') || request()->routeIs('admin.loans.reject')) ? 'bg-blue-600 text-white shadow-xl shadow-blue-100 font-bold' : 'text-slate-500 hover:bg-slate-50 hover:text-blue-600' }}">
                 <i data-lucide="git-pull-request" class="w-5 h-5 transition-transform group-hover:scale-110"></i>
-                <span class="text-sm">Menunggu Approval</span>
+                <span class="text-sm">Pengajuan Peminjaman</span>
             </a>
 
             <a href="{{ route('admin.loans.history') }}"
                class="group flex items-center gap-3.5 px-4 py-3 rounded-2xl transition-all duration-300
                {{ request()->routeIs('admin.loans.history') ? 'bg-blue-600 text-white shadow-xl shadow-blue-100 font-bold' : 'text-slate-500 hover:bg-slate-50 hover:text-blue-600' }}">
                 <i data-lucide="history" class="w-5 h-5 transition-transform group-hover:scale-110"></i>
-                <span class="text-sm">Riwayat Pinjam</span>
+                <span class="text-sm">Riwayat Peminjaman</span>
             </a>
 
             <div class="px-4 pt-6 pb-2">
@@ -78,7 +78,7 @@
                     class="group flex items-center gap-3.5 px-4 py-3 rounded-2xl transition-all duration-300
                     {{ request()->routeIs('admin.users.pending') ? 'bg-blue-600 text-white shadow-xl shadow-blue-100 font-bold' : 'text-slate-500 hover:bg-slate-50 hover:text-blue-600' }}">
                 <i data-lucide="user-plus-2" class="w-5 h-5 transition-transform group-hover:scale-110"></i>
-                <span class="text-sm">Verifikasi Akun</span>
+                <span class="text-sm">Pengajuan Registrasi</span>
             </a>
 
             <a href="{{ route('admin.users.active') }}"
@@ -115,43 +115,51 @@
     </aside>
 
     <!-- MAIN -->
-    <div id="main-content" class="ml-0 lg:ml-72 flex flex-col min-h-screen transition-all duration-300">
+    <div id="main-content" class="ml-0 lg:ml-72 flex flex-col min-h-screen transition-all duration-300 pt-20">
 
-        <!-- TOPBAR -->
-       <header class="bg-white/80 backdrop-blur-md border-b border-slate-200 px-4 md:px-10 py-5 flex justify-between items-center sticky top-0 z-40">
+        <!-- TOPBAR (fixed) -->
+    <header class="bg-white/80 backdrop-blur-md border-b border-slate-200 pl-10 pr-4 md:pl-16 md:pr-10 lg:pl-72 py-5 flex justify-between items-center fixed top-0 left-0 right-0 w-full z-40">
             <div class="flex items-center gap-4">
                 <!-- Mobile Menu Toggle -->
                 <button id="sidebar-toggle" class="lg:hidden p-2 text-slate-500 hover:bg-slate-50 rounded-xl transition-all">
                     <i data-lucide="menu" class="w-6 h-6"></i>
                 </button>
                 <div class="flex flex-col">
-                    <h1 class="font-extrabold text-xl text-slate-800 tracking-tight">@yield('title')</h1>
-                    <div class="flex items-center gap-2 mt-0.5">
-                        <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Sistem Online</span>
-                    </div>
+                 <h1 class="font-extrabold text-base md:text-lg lg:text-xl text-slate-800 tracking-tight
+           pl-1 md:pl-6 lg:pl-12">
+    @yield('title')
+</h1>
+
+                   
                 </div>
             </div>
             
             <div class="flex items-center gap-6">
-                <!-- Search Button (Optional/Visual) -->
-                
-
-                <div class="h-8 w-[1px] "></div>
-
+    
+                <div class="h-8 w-px"></div>
                 <div class="flex items-center gap-4">
-                    <div class="flex flex-col items-end">
-                        <span class="text-sm font-black text-slate-800 tracking-tight">{{ auth()->user()->name }}</span>
-                        <span class="text-[10px] font-bold text-blue-600 uppercase tracking-widest">Administrator</span>
-                    </div>
-                    <div class="w-11 h-11 bg-slate-100 rounded-2xl flex items-center justify-center border-2 border-white shadow-sm overflow-hidden group hover:border-blue-100 transition-all cursor-pointer">
-                        @if(auth()->user()->photo_path)
-                            <img src="{{ asset('storage/' . auth()->user()->photo_path) }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform">
-                        @else
-                            <i data-lucide="user-round" class="w-5 h-5 text-slate-400 group-hover:text-blue-500 transition-colors"></i>
-                        @endif
-                    </div>
-                </div>
+    <!-- Username & Role (HIDDEN di mobile) -->
+    <div class="hidden lg:flex flex-col items-end">
+        <span class="text-sm font-black text-slate-800 tracking-tight">
+            {{ auth()->user()->name }}
+        </span>
+        <span class="text-[10px] font-bold text-blue-600 uppercase tracking-widest">
+            Administrator
+        </span>
+    </div>
+
+    <!-- Foto Profil (SELALU tampil) -->
+    <div class="w-11 h-11 bg-slate-100 rounded-2xl flex items-center justify-center border-2 border-white shadow-sm overflow-hidden group hover:border-blue-100 transition-all cursor-pointer">
+        @if(auth()->user()->photo_path)
+            <img src="{{ asset('storage/' . auth()->user()->photo_path) }}"
+                 class="w-full h-full object-cover group-hover:scale-110 transition-transform">
+        @else
+            <i data-lucide="user-round"
+               class="w-5 h-5 text-slate-400 group-hover:text-blue-500 transition-colors"></i>
+        @endif
+    </div>
+</div>
+
             </div>
         </header>
 

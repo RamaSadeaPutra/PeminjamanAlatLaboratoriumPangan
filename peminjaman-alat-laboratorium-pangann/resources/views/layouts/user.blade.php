@@ -90,37 +90,60 @@
     <!-- MAIN AREA -->
     <div class="ml-0 lg:ml-72 flex flex-col min-h-screen transition-all duration-300">
         <!-- TOPBAR -->
-        <header class="bg-white/80 backdrop-blur-md border-b border-slate-200 px-4 md:px-10 py-5 flex justify-between items-center sticky top-0 z-40">
-            <div class="flex items-center gap-4">
-                <!-- Mobile Menu Toggle -->
-                <button id="sidebar-toggle" class="lg:hidden p-2 text-slate-500 hover:bg-slate-50 rounded-xl transition-all">
-                    <i data-lucide="menu" class="w-6 h-6"></i>
-                </button>
-                <div class="flex flex-col">
-                    <h1 class="font-extrabold text-xl text-slate-800 tracking-tight">@yield('title')</h1>
-                    <div class="flex items-center gap-2 mt-0.5">
-                        <span class="w-2 h-2 rounded-full bg-blue-500"></span>
-                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest italic">Akses Mahasiswa</span>
-                    </div>
-                </div>
-            </div>
+      <header class="bg-white/80 backdrop-blur-md border-b border-slate-200 px-4 md:px-10 py-5 flex justify-between items-center sticky top-0 z-40">
+    
+    <!-- LEFT: Burger + Title -->
+    <div class="flex items-center gap-2 md:gap-4">
+        <!-- Mobile Menu Toggle -->
+        <button id="sidebar-toggle"
+            class="lg:hidden p-2 text-slate-500 hover:bg-slate-50 rounded-xl transition-all">
+            <i data-lucide="menu" class="w-6 h-6"></i>
+        </button>
 
-            <div class="flex items-center gap-6">
-                <div class="flex items-center gap-4">
-                    <div class="flex flex-col items-end">
-                        <span class="text-sm font-black text-slate-800 tracking-tight">{{ auth()->user()->name }}</span>
-                        <span class="text-[10px] font-bold text-blue-600 uppercase tracking-widest">{{ auth()->user()->nim }}</span>
-                    </div>
-                    <div class="w-11 h-11 bg-slate-100 rounded-2xl flex items-center justify-center border-2 border-white shadow-sm overflow-hidden group hover:border-blue-100 transition-all cursor-pointer">
-                        @if(auth()->user()->photo_path)
-                            <img src="{{ asset('storage/' . auth()->user()->photo_path) }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform">
-                        @else
-                            <i data-lucide="user-round" class="w-5 h-5 text-slate-400 group-hover:text-blue-500 transition-colors"></i>
-                        @endif
-                    </div>
-                </div>
+        <div class="flex flex-col">
+            <h1
+                class="font-extrabold text-base md:text-lg lg:text-xl text-slate-800 tracking-tight">
+                @yield('title')
+            </h1>
+
+            <!-- Sub text (hidden di mobile) -->
+            <div class="hidden md:flex items-center gap-2 mt-0.5">
+                <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                <span
+                    class="text-[10px] font-bold text-slate-400 uppercase tracking-widest italic">
+                    Akses Mahasiswa
+                </span>
             </div>
-        </header>
+        </div>
+    </div>
+
+    <!-- RIGHT: User Info -->
+    <div class="flex items-center gap-4">
+        
+        <!-- Nama & NIM (HIDDEN di mobile) -->
+        <div class="hidden lg:flex flex-col items-end">
+            <span class="text-sm font-black text-slate-800 tracking-tight">
+                {{ auth()->user()->name }}
+            </span>
+            <span class="text-[10px] font-bold text-blue-600 uppercase tracking-widest">
+                {{ auth()->user()->nim }}
+            </span>
+        </div>
+
+        <!-- Foto Profil (SELALU tampil) -->
+        <div
+            class="w-11 h-11 bg-slate-100 rounded-2xl flex items-center justify-center border-2 border-white shadow-sm overflow-hidden group hover:border-blue-100 transition-all cursor-pointer">
+            @if(auth()->user()->photo_path)
+                <img src="{{ asset('storage/' . auth()->user()->photo_path) }}"
+                    class="w-full h-full object-cover group-hover:scale-110 transition-transform">
+            @else
+                <i data-lucide="user-round"
+                    class="w-5 h-5 text-slate-400 group-hover:text-blue-500 transition-colors"></i>
+            @endif
+        </div>
+    </div>
+</header>
+
 
         <!-- CONTENT -->
         <main class="p-4 md:p-10 flex-1">

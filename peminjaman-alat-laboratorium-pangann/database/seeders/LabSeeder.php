@@ -12,10 +12,19 @@ class LabSeeder extends Seeder
      */
    public function run(): void
 {
-    Lab::create([
-        'lab_name' => 'Laboratorium Pangan',
+    Lab::insert([
+    [
+        'lab_name' => 'Laboratorium Analisis Pangan',
         'location' => 'Gedung Fakultas Teknik',
-        'description' => 'Laboratorium untuk praktikum dan penelitian pangan'
-    ]);
+        'description' => 'Laboratorium untuk praktikum dan penelitian pangan',
+    ],
+    [
+        'lab_name' => 'Laboratorium Pengetahuan Bahan Pangan',
+        'location' => 'Gedung Fakultas MIPA',
+        'description' => 'Laboratorium analisis dan praktikum Pengetahuan Bahan Pangan',
+    ],
+ 
+]);
+
 }
 }

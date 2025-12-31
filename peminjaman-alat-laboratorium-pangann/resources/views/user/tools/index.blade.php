@@ -64,7 +64,7 @@
             </div>
 
             <!-- Search -->
-            <div class="relative w-full md:w-[33.5rem] font-sans">
+            <div class="relative w-full md:w-134 font-sans">
                 <input type="text" id="live-search" placeholder="Cari alat..." 
                        class="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm focus:ring-4 focus:ring-blue-100 focus:border-blue-500 outline-none transition-all">
                 <div class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400">

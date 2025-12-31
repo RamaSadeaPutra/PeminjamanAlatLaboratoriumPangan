@@ -60,6 +60,17 @@
     <div class="header">
         <h2>LAPORAN RIWAYAT PEMINJAMAN</h2>
         <p>Laboratorium Pangan - Tanggal Cetak: {{ date('d F Y') }}</p>
+        @if(!empty($month))
+            @php
+                try {
+                    $parts = explode('-', $month);
+                    $label = \Carbon\Carbon::createFromDate($parts[0], $parts[1], 1)->format('F Y');
+                } catch (\Exception $e) {
+                    $label = $month;
+                }
+            @endphp
+            <p>Periode: {{ $label }}</p>
+        @endif
     </div>
 
     <table>

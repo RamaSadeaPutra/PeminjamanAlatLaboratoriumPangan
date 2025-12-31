@@ -14,10 +14,10 @@ class ToolCategorySeeder extends Seeder
    public function run(): void
 {
     $categories = [
-        'Alat Analisis',
-        'Alat Preparasi',
-        'Alat Pemanasan',
-        'Alat Pendingin'
+        'Alat Kadar Air',
+        'Alat Kadar Klorida (CL)',
+        'Alat Analisis Buah Dan Sayur',
+        'Alat Analisis Telur',
     ];
 
     foreach ($categories as $category) {

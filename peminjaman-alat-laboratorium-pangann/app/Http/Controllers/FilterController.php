@@ -7,12 +7,12 @@ use App\Models\User;
 use App\Models\Loan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 class FilterController extends Controller
 {
     /**
-     * Filter utama untuk daftar alat (digunakan oleh Admin & User)
-     * Menggabungkan pencarian keyword dengan filter Lab, Kategori, dan Kondisi
+     * Filter utama untuk daftar alat (Admin & User)
      */
     public function filterTools(Request $request)
     {
@@ -22,30 +22,24 @@ class FilterController extends Controller
         $condition = $request->input('condition');
 
         $tools = Tool::with(['lab', 'category'])
-            // Kondisi: Hanya tampilkan yang stoknya ada (atau semua untuk admin, tapi di sini kita ikuti logika sebelumnya)
-            // Jika user biasa, stok > 0. Jika admin, semua.
-            ->when(auth()->user()->role === 'user', function($q) {
+            ->when(Auth::check() && Auth::user()->role === 'user', function ($q) {
                 $q->where('stock', '>', 0);
             })
-            // Filter berdasarkan keyword
-            ->when($query, function($q) use ($query) {
-                $q->where(function($sub) use ($query) {
+            ->when($query, function ($q) use ($query) {
+                $q->where(function ($sub) use ($query) {
                     $sub->where('tool_name', 'LIKE', "%{$query}%")
-                        ->orWhereHas('category', function($cat) use ($query) {
+                        ->orWhereHas('category', function ($cat) use ($query) {
                             $cat->where('category_name', 'LIKE', "%{$query}%");
                         });
                 });
             })
-            // Filter berdasarkan Lab
-            ->when($lab_id, function($q) use ($lab_id) {
+            ->when($lab_id, function ($q) use ($lab_id) {
                 $q->where('lab_id', $lab_id);
             })
-            // Filter berdasarkan Kategori
-            ->when($category_id, function($q) use ($category_id) {
+            ->when($category_id, function ($q) use ($category_id) {
                 $q->where('tool_category_id', $category_id);
             })
-            // Filter berdasarkan Kondisi
-            ->when($condition, function($q) use ($condition) {
+            ->when($condition, function ($q) use ($condition) {
                 $q->where('condition', $condition);
             })
             ->get();
@@ -58,26 +52,26 @@ class FilterController extends Controller
     }
 
     /**
-     * Filter untuk halaman Persetujuan Akun
+     * Filter halaman Persetujuan Akun
      */
     public function filterUsers(Request $request)
     {
         $query = trim((string) $request->input('query', ''));
         $status = $request->input('status');
 
-        $users = User::when($status, function($q) use ($status) {
+        $users = User::when($status, function ($q) use ($status) {
                 if ($status === 'history') {
                     $q->whereIn('status', ['active', 'rejected']);
                 } else {
                     $q->where('status', $status);
                 }
-            }, function($q) {
+            }, function ($q) {
                 $q->where('status', 'pending');
             })
             ->where('role', 'user')
-            ->when($query, function($q) use ($query) {
+            ->when($query, function ($q) use ($query) {
                 $lower = strtolower($query);
-                $q->where(function($sub) use ($query, $lower) {
+                $q->where(function ($sub) use ($query, $lower) {
                     $sub->whereRaw('LOWER(name) LIKE ?', ["%{$lower}%"])
                         ->orWhereRaw('LOWER(email) LIKE ?', ["%{$lower}%"])
                         ->orWhere('nim', 'LIKE', "%{$query}%");
@@ -85,22 +79,21 @@ class FilterController extends Controller
             })
             ->get();
 
-        // Log for debugging search issues
         try {
-            Log::info('filterUsers', ['status' => $status, 'query' => $query, 'count' => $users->count()]);
-        } catch (\Exception $e) {
-            // ignore logging failures
-        }
+            Log::info('filterUsers', [
+                'status' => $status,
+                'query' => $query,
+                'count' => $users->count()
+            ]);
+        } catch (\Exception $e) {}
 
         if ($request->ajax()) {
             $context = $request->input('context');
 
-            // If the caller is the history page, always return the history partial
             if ($context === 'history') {
                 return view('partials.user_list_history', compact('users'))->render();
             }
 
-            // Otherwise return appropriate partial depending on status
             if ($status === 'active') {
                 return view('partials.user_list_active', compact('users'))->render();
             }
@@ -116,7 +109,7 @@ class FilterController extends Controller
     }
 
     /**
-     * Filter untuk halaman Pengajuan Peminjaman (Admin)
+     * Filter Pengajuan Peminjaman (Admin)
      */
     public function filterLoans(Request $request)
     {
@@ -125,20 +118,20 @@ class FilterController extends Controller
 
         $loans = Loan::with(['user', 'tool'])
             ->whereIn('status', ['menunggu', 'disetujui', 'dipinjam'])
-            ->when($query, function($q) use ($query) {
-                $q->where(function($sub) use ($query) {
-                    $sub->whereHas('user', function($u) use ($query) {
+            ->when($query, function ($q) use ($query) {
+                $q->where(function ($sub) use ($query) {
+                    $sub->whereHas('user', function ($u) use ($query) {
                         $u->where('name', 'LIKE', "%{$query}%");
                     })
-                    ->orWhereHas('tool', function($t) use ($query) {
+                    ->orWhereHas('tool', function ($t) use ($query) {
                         $t->where('tool_name', 'LIKE', "%{$query}%");
                     });
                 });
             })
-            ->when($status, function($q) use ($status) {
+            ->when($status, function ($q) use ($status) {
                 $q->where('status', $status);
             })
-            ->orderBy('created_at', 'desc')
+            ->latest()
             ->get();
 
         if ($request->ajax()) {
@@ -149,7 +142,7 @@ class FilterController extends Controller
     }
 
     /**
-     * Filter untuk halaman Riwayat Peminjaman (Admin)
+     * Filter Riwayat Peminjaman (Admin)
      */
     public function filterHistory(Request $request)
     {
@@ -158,20 +151,20 @@ class FilterController extends Controller
 
         $loans = Loan::with(['user', 'tool'])
             ->whereIn('status', ['kembali', 'ditolak'])
-            ->when($query, function($q) use ($query) {
-                $q->where(function($sub) use ($query) {
-                    $sub->whereHas('user', function($u) use ($query) {
+            ->when($query, function ($q) use ($query) {
+                $q->where(function ($sub) use ($query) {
+                    $sub->whereHas('user', function ($u) use ($query) {
                         $u->where('name', 'LIKE', "%{$query}%");
                     })
-                    ->orWhereHas('tool', function($t) use ($query) {
+                    ->orWhereHas('tool', function ($t) use ($query) {
                         $t->where('tool_name', 'LIKE', "%{$query}%");
                     });
                 });
             })
-            ->when($status, function($q) use ($status) {
+            ->when($status, function ($q) use ($status) {
                 $q->where('status', $status);
             })
-            ->orderBy('created_at', 'desc')
+            ->latest()
             ->get();
 
         if ($request->ajax()) {
@@ -182,23 +175,23 @@ class FilterController extends Controller
     }
 
     /**
-     * Filter untuk halaman Pinjaman Saya (User)
+     * Filter Pinjaman Saya (User)
      */
     public function filterMyLoans(Request $request)
     {
         $query = $request->input('query');
         $status = $request->input('status');
-        $userId = auth()->id();
+        $userId = Auth::id();
 
         $loans = Loan::with(['tool', 'user'])
             ->where('user_id', $userId)
             ->whereIn('status', ['menunggu', 'disetujui', 'dipinjam'])
-            ->when($query, function($q) use ($query) {
-                $q->whereHas('tool', function($t) use ($query) {
+            ->when($query, function ($q) use ($query) {
+                $q->whereHas('tool', function ($t) use ($query) {
                     $t->where('tool_name', 'LIKE', "%{$query}%");
                 });
             })
-            ->when($status, function($q) use ($status) {
+            ->when($status, function ($q) use ($status) {
                 $q->where('status', $status);
             })
             ->latest()
@@ -212,23 +205,23 @@ class FilterController extends Controller
     }
 
     /**
-     * Filter untuk halaman Riwayat Peminjaman Saya (User)
+     * Filter Riwayat Peminjaman Saya (User)
      */
     public function filterMyHistory(Request $request)
     {
         $query = $request->input('query');
         $status = $request->input('status');
-        $userId = auth()->id();
+        $userId = Auth::id();
 
         $loans = Loan::with(['tool'])
             ->where('user_id', $userId)
             ->whereIn('status', ['kembali', 'ditolak'])
-            ->when($query, function($q) use ($query) {
-                $q->whereHas('tool', function($t) use ($query) {
+            ->when($query, function ($q) use ($query) {
+                $q->whereHas('tool', function ($t) use ($query) {
                     $t->where('tool_name', 'LIKE', "%{$query}%");
                 });
             })
-            ->when($status, function($q) use ($status) {
+            ->when($status, function ($q) use ($status) {
                 $q->where('status', $status);
             })
             ->latest()

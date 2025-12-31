@@ -40,22 +40,34 @@ class LoanApprovalController extends Controller
      * Fungsi untuk export riwayat peminjaman ke format PDF
      * Hanya bisa diakses oleh Admin
      */
-    public function exportPdf()
+    public function exportPdf(\Illuminate\Http\Request $request)
     {
         // Mengambil data riwayat peminjaman (Selesai/Ditolak)
-        $loans = Loan::with(['user', 'tool'])
-            ->whereIn('status', ['kembali', 'ditolak'])
-            ->orderBy('created_at', 'desc')
-            ->get();
+        $month = $request->input('month'); // expected format: YYYY-MM
 
-        // Load view khusus untuk format PDF dengan konfigurasi
-        $pdf = Pdf::loadView('admin.loans.report_pdf', compact('loans'))
+        $query = Loan::with(['user', 'tool'])
+            ->whereIn('status', ['kembali', 'ditolak']);
+
+        if ($month) {
+            try {
+                [$year, $mon] = explode('-', $month);
+                $query->whereYear('tanggal_pinjam', $year)
+                      ->whereMonth('tanggal_pinjam', $mon);
+            } catch (\Exception $e) {
+               
+            }
+        }
+
+        $loans = $query->orderBy('created_at', 'desc')->get();
+
+        $pdf = Pdf::loadView('admin.loans.report_pdf', compact('loans', 'month'))
             ->setPaper('a4', 'landscape')
             ->setOption('isHtml5ParserEnabled', true)
             ->setOption('isRemoteEnabled', true);
         
         // Download file PDF
-        return $pdf->download('riwayat-peminjaman-' . date('Y-m-d') . '.pdf');
+        $filename = 'riwayat-peminjaman-' . ($month ? $month : date('Y-m-d')) . '.pdf';
+        return $pdf->download($filename);
     }
 
     /**

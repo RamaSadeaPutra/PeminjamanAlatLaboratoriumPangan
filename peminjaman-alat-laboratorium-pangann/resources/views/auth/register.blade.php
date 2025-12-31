@@ -17,30 +17,35 @@
 <body class="bg-slate-50 min-h-screen flex items-center justify-center p-4 lg:p-10 relative overflow-hidden">
 
     <!-- Background Blur -->
-    <div class="absolute -top-48 -left-48 w-[500px] h-[500px] bg-blue-100 rounded-full blur-[120px] opacity-40"></div>
-    <div class="absolute -bottom-48 -right-48 w-[500px] h-[500px] bg-sky-100 rounded-full blur-[120px] opacity-40"></div>
+    <div class="absolute -top-48 -left-48 w-125 h-125 bg-blue-100 rounded-full blur-[120px] opacity-40"></div>
+    <div class="absolute -bottom-48 -right-48 w-125 h-125 bg-sky-100 rounded-full blur-[120px] opacity-40"></div>
 
     <div class="relative w-full max-w-lg">
 
         <!-- Brand -->
         <div class="flex flex-col items-center mb-6">
-            <div class="w-14 h-14 bg-blue-600 rounded-3xl shadow-xl shadow-blue-200 flex items-center justify-center mb-3 -rotate-6 hover:rotate-0 transition-all duration-700">
+            <div class="w-14 h-14 mb-3 bg-blue-600 rounded-3xl shadow-xl shadow-blue-200 flex items-center justify-center -rotate-6 hover:rotate-0 transition-all duration-700">
                 <i data-lucide="flask-conical" class="w-7 h-7 text-white"></i>
             </div>
+
             <h1 class="text-lg font-black text-slate-800 text-center tracking-tighter leading-tight uppercase">
-                PEMBUATAN AKUN <br>
-                <span class="text-blue-600">INVENTARIS LAB</span>
+                Pembuatan Akun <br>
+                <span class="text-blue-600">
+                    Peminjaman Alat Laboratorium Teknologi Pangan
+                </span>
             </h1>
         </div>
 
         <!-- Card -->
-        <div class="bg-white rounded-[24px] md:rounded-[28px] shadow-2xl shadow-slate-200 border border-slate-100 p-4 md:p-7 relative overflow-hidden">
+        <div class="bg-white rounded-3xl shadow-2xl shadow-slate-200 border border-slate-100 p-5 md:p-7 relative overflow-hidden">
             <div class="absolute top-0 right-0 w-40 h-40 bg-slate-50 rounded-bl-full -mr-20 -mt-20"></div>
 
             <div class="relative z-10">
 
                 <div class="mb-5">
-                    <h2 class="text-xl font-extrabold text-slate-800 tracking-tight">Daftar Sekarang</h2>
+                    <h2 class="text-xl font-extrabold text-slate-800">
+                        Daftar Sekarang
+                    </h2>
                     <p class="text-xs text-slate-400 font-medium mt-1">
                         Lengkapi data diri untuk akses laboratorium
                     </p>
@@ -58,9 +63,9 @@
                             </label>
                             <div class="relative">
                                 <input type="text" name="name" value="{{ old('name') }}" required autofocus
-                                    class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-[18px] text-slate-700 text-[13px] font-bold focus:ring-4 focus:ring-blue-100 focus:border-blue-500 outline-none transition-all placeholder:text-slate-300"
+                                    class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-[18px] text-[13px] font-bold focus:ring-4 focus:ring-blue-100 focus:border-blue-500 outline-none"
                                     placeholder="Nama Lengkap">
-                                <i data-lucide="user" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-slate-400 group-focus-within:text-blue-500"></i>
+                                <i data-lucide="user" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"></i>
                             </div>
                             @error('name')
                                 <p class="mt-1 text-red-500 text-[10px] font-bold">{{ $message }}</p>
@@ -74,9 +79,9 @@
                             </label>
                             <div class="relative">
                                 <input type="text" name="nim" value="{{ old('nim') }}" required
-                                    class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-[18px] text-slate-700 text-[13px] font-bold font-mono focus:ring-4 focus:ring-blue-100 focus:border-blue-500 outline-none transition-all placeholder:text-slate-300"
+                                    class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-[18px] text-[13px] font-bold font-mono focus:ring-4 focus:ring-blue-100 focus:border-blue-500 outline-none"
                                     placeholder="123456789">
-                                <i data-lucide="id-card" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-slate-400 group-focus-within:text-blue-500"></i>
+                                <i data-lucide="id-card" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"></i>
                             </div>
                             @error('nim')
                                 <p class="mt-1 text-red-500 text-[10px] font-bold">{{ $message }}</p>
@@ -90,9 +95,9 @@
                             </label>
                             <div class="relative">
                                 <input type="email" name="email" value="{{ old('email') }}" required
-                                    class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-[18px] text-slate-700 text-[13px] font-bold focus:ring-4 focus:ring-blue-100 focus:border-blue-500 outline-none transition-all placeholder:text-slate-300"
-                                    placeholder="student@unpas.ac.id">
-                                <i data-lucide="mail" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-slate-400 group-focus-within:text-blue-500"></i>
+                                    class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-[18px] text-[13px] font-bold focus:ring-4 focus:ring-blue-100 focus:border-blue-500 outline-none"
+                                    placeholder="student@mail.unpas.ac.id">
+                                <i data-lucide="mail" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"></i>
                             </div>
                             @error('email')
                                 <p class="mt-1 text-red-500 text-[10px] font-bold">{{ $message }}</p>
@@ -106,59 +111,59 @@
                             </label>
                             <div class="relative">
                                 <input type="password" id="password" name="password" required
-                                    class="w-full pl-10 pr-10 py-3 bg-slate-50 border border-slate-200 rounded-[18px] text-slate-700 text-[13px] font-bold focus:ring-4 focus:ring-blue-100 focus:border-blue-500 outline-none transition-all"
+                                    class="w-full pl-10 pr-12 py-3 bg-slate-50 border border-slate-200 rounded-[18px] text-[13px] font-bold focus:ring-4 focus:ring-blue-100 focus:border-blue-500 outline-none"
                                     placeholder="••••••••">
-                                <i data-lucide="lock" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-slate-400"></i>
-                                <button type="button" onclick="togglePassword('password','eye1')" class="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400">
-                                    <i data-lucide="eye-off" id="eye1" class="w-4.5 h-4.5"></i>
+                                <i data-lucide="lock" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"></i>
+                                <button type="button" onclick="togglePassword('password','icon-pass')"
+                                    class="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400">
+                                    <i id="icon-pass" data-lucide="eye-off" class="w-4 h-4"></i>
                                 </button>
                             </div>
+                            @error('password')
+                                <p class="mt-1 text-red-500 text-[10px] font-bold">{{ $message }}</p>
+                            @enderror
                         </div>
 
-                        <!-- Confirm Password -->
+                        <!-- Konfirmasi Password -->
                         <div class="group">
                             <label class="block text-[10px] font-black text-slate-500 uppercase tracking-[0.18em] mb-1 px-1">
-                                Ulangi Password
+                                Konfirmasi Password
                             </label>
                             <div class="relative">
                                 <input type="password" id="password_confirmation" name="password_confirmation" required
-                                    class="w-full pl-10 pr-10 py-3 bg-slate-50 border border-slate-200 rounded-[18px] text-slate-700 text-[13px] font-bold focus:ring-4 focus:ring-blue-100 focus:border-blue-500 outline-none transition-all"
+                                    class="w-full pl-10 pr-12 py-3 bg-slate-50 border border-slate-200 rounded-[18px] text-[13px] font-bold focus:ring-4 focus:ring-blue-100 focus:border-blue-500 outline-none"
                                     placeholder="••••••••">
-                                <i data-lucide="lock" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-slate-400"></i>
-                                <button type="button" onclick="togglePassword('password_confirmation','eye2')" class="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400">
-                                    <i data-lucide="eye-off" id="eye2" class="w-4.5 h-4.5"></i>
+                                <i data-lucide="shield-check" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"></i>
+                                <button type="button" onclick="togglePassword('password_confirmation','icon-pass-confirm')"
+                                    class="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400">
+                                    <i id="icon-pass-confirm" data-lucide="eye-off" class="w-4 h-4"></i>
                                 </button>
                             </div>
                         </div>
 
                     </div>
 
-                    <!-- Button -->
                     <button type="submit"
-                        class="w-full py-3.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-black uppercase tracking-[0.1em] rounded-3xl shadow-xl shadow-blue-200 transition-all active:scale-[0.98] flex items-center justify-center gap-2 mt-5">
-                        <span>Daftar Sekarang</span>
-                        <i data-lucide="user-plus" class="w-4.5 h-4.5"></i>
+                        class="w-full py-3.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-black uppercase tracking-widest rounded-3xl shadow-xl shadow-blue-200 transition-all active:scale-[0.98] mt-5">
+                        Daftar Sekarang
                     </button>
-
                 </form>
 
-                <div class="mt-5 text-center">
-                    <p class="text-xs text-slate-400 font-medium">
-                        Sudah punya akun?
-                        <a href="{{ route('login') }}" class="text-blue-600 font-bold hover:underline">
-                            Login
-                        </a>
-                    </p>
+                <div class="mt-5 text-center text-xs text-slate-400">
+                    Sudah punya akun?
+                    <a href="{{ route('login') }}" class="text-blue-600 font-bold hover:underline">
+                        Login
+                    </a>
                 </div>
 
             </div>
         </div>
 
-        <div class="mt-6 text-center">
-            <p class="text-[10px] text-slate-400 font-black uppercase tracking-[0.3em] opacity-60">
-                © 2025 Sistem Inventaris Teknologi Pangan
-            </p>
+        <div class="mt-6 text-center text-[9px] text-slate-400 font-bold uppercase tracking-widest">
+            © 2025 Sistem Peminjaman Alat Laboratorium Teknologi Pangan<br>
+            Universitas Pasundan
         </div>
+
     </div>
 
     <script>

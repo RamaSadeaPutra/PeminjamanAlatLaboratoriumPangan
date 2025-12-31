@@ -20,13 +20,7 @@ class UserController extends Controller
         return view('admin.users.index', compact('users'));
     }
 
-    /**
-     * Menampilkan detail user (opsional, jika diperlukan nanti)
-     */
-    public function show(User user)
-    {
-        return view('admin.users.show', compact('user'));
-    }
+ 
 
     /**
      * Menghapus user

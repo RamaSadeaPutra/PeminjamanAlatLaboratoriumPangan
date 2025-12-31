@@ -7,7 +7,10 @@
 <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
     <!-- Filters Bar -->
     <div class="p-4 md:p-6 border-b border-slate-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-slate-50/50">
-        <h2 class="text-xl font-bold text-slate-800">Daftar Pengajuan</h2>
+        <div>
+                <h2 class="text-xl font-bold text-slate-800">Daftar Pengajuan Peminjaman</h2>
+                <p class="text-xs text-slate-500 font-medium">Manajemen inventaris Laboratorium</p>
+            </div>
         
         <div class="flex flex-wrap lg:flex-nowrap items-center gap-3 w-full lg:w-auto">
             <!-- Search -->
@@ -56,11 +59,12 @@
         <table class="w-full text-left border-collapse">
             <thead class="hidden md:table-header-group">
                 <tr class="bg-slate-50 text-slate-500 text-[11px] font-bold uppercase tracking-wider border-b border-slate-100">
-                    <th class="px-4 py-3">Nama</th>
-                    <th class="px-4 py-3">NIM</th>
-                    <th class="px-4 py-3">Email</th>
+                    <th class="px-4 py-3 text-center">Nama</th>
+                    <th class="px-4 py-3 text-center">NIM</th>
+                    <th class="px-4 py-3 text-center">Email</th>
+                    <th class="px-4 py-3 text-center">Tanggal Pengajuan</th>
                     <th class="px-4 py-3 text-center">Alat & Jumlah</th>
-                    <th class="px-4 py-3 text-center">Periode Sewa</th>
+                    <th class="px-4 py-3 text-center">Tanggal Peminjaman</th>
                     <th class="px-4 py-3 text-center">Status</th>
                     <th class="px-4 py-3 text-center">Aksi</th>
                 </tr>
